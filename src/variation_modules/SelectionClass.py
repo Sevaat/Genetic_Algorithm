@@ -9,7 +9,7 @@ class Selection(ABC):
         """
         Выбор родителей в соответствии с весом (значение ЦФ)
         :param individuals: список взвешенных (со значением ЦФ) особей
-        :return: список родителей (int(len(individuals)/2) на 2)
+        :return: список родителей длиной len(individuals)/2 по 2 особи
         """
         weights = [p.rank for p in individuals]
         parents = []
@@ -24,15 +24,15 @@ class Selection(ABC):
     @staticmethod
     def stochastic_universal_sampling(individuals: [Individual]) -> [Individual]:
         """
-        Выбор родителей с помощью стохастической универсальной выборке (1 - случайно; 3 - со смещением в четверть)
+        Выбор родителей с помощью стохастической универсальной выборки (1 - случайно; 3 - со смещением в четверть)
         :param individuals: список взвешенных (со значением ЦФ) особей
-        :return: список родителей (int(len(individuals)/6) на 4)
+        :return: список родителей длиной len(individuals)/2 по 2 особи
         """
         weights = [p.rating for p in individuals]
         total_weight = sum(weights)
         pointer_distance = total_weight / 4
         parents = []
-        while len(parents) < int(len(individuals)/6):
+        while len(parents) < int(len(individuals)/2):
             points = [random.uniform(0, total_weight)]
             new_point = points[0]
             for i in range(3):
@@ -50,7 +50,9 @@ class Selection(ABC):
                 if current_weight >= points[j]:
                     new_parents.append(individuals[i])
                     j += 1
-            parents.append(new_parents)
+            for i, p1 in enumerate(new_parents):
+                for p2 in new_parents[i + 1:]:
+                    parents.append([p1, p2])
         return parents
 
 
