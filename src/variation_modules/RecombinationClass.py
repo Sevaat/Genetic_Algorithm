@@ -51,6 +51,27 @@ class Recombination(ABC):
         return childrens
 
     @staticmethod
+    def even_crossing(parents: [[Individual]]) -> [Individual]:
+        """
+        Равномерное скрещивание (выбор каждого детского признака от родителей с вероятностью 50%)
+        :param parents: список родителей
+        :return: список детей
+        """
+        childrens = []
+        for twos in parents:
+            points = Recombination.get_points(len(twos[0].code))
+            children_1 = ''
+            children_2 = ''
+            for i in range(0, len(points) - 1):
+                p = random.choices(twos, weights=[50, 50], k=1)
+                children_1 += p.code[points[i]:points[i + 1]]
+                p = random.choices(twos, weights=[50, 50], k=1)
+                children_2 += p.code[points[i]:points[i + 1]]
+            childrens.append(children_1)
+            childrens.append(children_2)
+        return childrens
+
+    @staticmethod
     def single_point_crossing(parents: [[Individual]]) -> [Individual]:
         """
         Одноточечное скрещивание (случайная точка для обмена частью генотипа особей)

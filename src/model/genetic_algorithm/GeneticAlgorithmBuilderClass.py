@@ -95,6 +95,8 @@ class GeneticAlgorithmRecombinationBuilder(GeneticAlgorithmBuilder):
             self.genetic_algorithm.recombination = Recombination.point_crossing
         elif recombination == 'СЕГМЕНТИРОВАННАЯ':
             self.genetic_algorithm.recombination = Recombination.segmental_crossing
+        elif recombination == 'РАВНОМЕРНАЯ':
+            self.genetic_algorithm.recombination = Recombination.even_crossing
         else:
             self.genetic_algorithm.recombination = None
         return self
