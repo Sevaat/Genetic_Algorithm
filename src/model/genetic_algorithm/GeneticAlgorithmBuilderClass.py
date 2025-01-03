@@ -93,6 +93,8 @@ class GeneticAlgorithmRecombinationBuilder(GeneticAlgorithmBuilder):
     def set_recombination(self, recombination):
         if recombination == 'ТОЧЕЧНАЯ':
             self.genetic_algorithm.recombination = Recombination.point_crossing
+        elif recombination == 'СЕГМЕНТИРОВАННАЯ':
+            self.genetic_algorithm.recombination = Recombination.segmental_crossing
         else:
             self.genetic_algorithm.recombination = None
         return self
