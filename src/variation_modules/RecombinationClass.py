@@ -1,9 +1,32 @@
 from abc import ABC
 import random
 from src.model.IndividualClass import Individual
+import src.utils.GlobalVariables as GV
 
 
 class Recombination(ABC):
+    @staticmethod
+    def point_crossing(parents: [[Individual]]) -> [Individual]:
+        """
+        Точечное скрещивание (случайная точка (точки) для обмена частью генотипа особей)
+        :param parents: список родителей
+        :return: список детей
+        """
+        childrens = []
+        for twos in parents:
+            points = [random.randint(1, len(twos[0].code) - 2) for i in range(GV.PARAMETERS.recombination_point_count)]
+            points.append(0)
+            points.append(len(twos[0].code)-1)
+            points = sorted(points)
+            children_1 = ''
+            children_2 = ''
+            for i in range(len(points)-1):
+                children_1 += twos[i % 2].code[points[i]:points[i + 1]]
+                children_2 += twos[(i + 1) % 2].code[points[i]:points[i + 1]]
+            childrens.append(children_1)
+            childrens.append(children_2)
+        return childrens
+
     @staticmethod
     def single_point_crossing(parents: [[Individual]]) -> [Individual]:
         """

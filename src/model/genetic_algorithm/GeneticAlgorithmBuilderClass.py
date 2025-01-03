@@ -91,10 +91,8 @@ class GeneticAlgorithmRecombinationBuilder(GeneticAlgorithmBuilder):
         super().__init__(genetic_algorithm)
 
     def set_recombination(self, recombination):
-        if recombination == 'ОДНОТОЧЕЧНАЯ':
-            self.genetic_algorithm.recombination = Recombination.single_point_crossing
-        elif recombination == 'ДВУХТОЧЕЧНАЯ':
-            self.genetic_algorithm.recombination = Recombination.two_point_crossing
+        if recombination == 'ТОЧЕЧНАЯ':
+            self.genetic_algorithm.recombination = Recombination.point_crossing
         else:
             self.genetic_algorithm.recombination = None
         return self

@@ -7,6 +7,7 @@ class Parameters:
         self.mutation_probability = None  # вероятность мутации
         self.change_counter = None # счётчик изменений лучшей особи
         self.number_of_results = None # количество выводимых результатов
+        self.recombination_point_count = None # количество точек рекомбинации
 
 
 if __name__ == '__main__':

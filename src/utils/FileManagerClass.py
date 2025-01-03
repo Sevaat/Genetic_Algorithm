@@ -74,6 +74,8 @@ class FileManager:
                     GV.counter = int(data[1].strip())
                 elif data[0] == 'Количество выводимых результатов':
                     parameters.number_of_results = int(data[1].strip())
+                elif data[0] == 'Количество точек рекомбинации':
+                    parameters.recombination_point_count = int(data[1].strip())
                 elif data[0] == 'Ген':
                     gene_sets.append(data[1].strip().split())
                 elif data[0] == 'Ген (н, к, ш)':
