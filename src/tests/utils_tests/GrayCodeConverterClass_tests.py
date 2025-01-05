@@ -3,7 +3,6 @@ import src.utils.FileManagerClass as fmc
 from src.utils.GrayCodeConverterClass import GrayCodeConverter as gcc
 import src.utils.GlobalVariables as GV
 
-
 filepath_1 = "../data_test/Data_Test_1.txt"
 filepath_2 = "../data_test/Data_Test_2.txt"
 filepath_3 = "../data_test/Data_Test_3.txt"
