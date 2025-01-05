@@ -82,7 +82,7 @@ class FileManager:
                     gene_set = []
                     start, end, step = [float(i) for i in data[1].strip().split()]
                     while start <= end:
-                        gene_set.append(start)
+                        gene_set.append(str(start))
                         start += step
                     gene_sets.append(gene_set)
                 else:
