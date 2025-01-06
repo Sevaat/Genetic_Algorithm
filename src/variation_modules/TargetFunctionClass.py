@@ -15,7 +15,7 @@ class TargetFunction(ABC):
             if ind.overstepping():
                 rank = 0
                 for chromosome in ind.transcript_individual():
-                    rank += int(chromosome)
+                    rank += float(chromosome)
                 ind.rank = rank
                 new_individuals.append(ind)
         return new_individuals
