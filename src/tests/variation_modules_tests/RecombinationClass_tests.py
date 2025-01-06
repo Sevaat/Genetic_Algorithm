@@ -29,7 +29,7 @@ class RecombinationClassTests(unittest.TestCase):
 
         childrens = Recombination.point_crossing(parents) # точка деления на последнем символе
 
-        result = [childrens[0], childrens[1]]
+        result = [childrens[0].code, childrens[1].code]
 
         self.assertEqual(result, ['110001010', '001000111'])
 
@@ -50,7 +50,7 @@ class RecombinationClassTests(unittest.TestCase):
 
         childrens = Recombination.segmental_crossing(parents) # точка деления после второго символа,
 
-        result = [childrens[0], childrens[1]]
+        result = [childrens[0].code, childrens[1].code]
 
         self.assertEqual(result, ['000010001', '011001110'])
 
@@ -71,7 +71,7 @@ class RecombinationClassTests(unittest.TestCase):
 
         childrens = Recombination.segmental_crossing(parents) # точка деления после второго символа,
 
-        result = [childrens[0], childrens[1]]
+        result = [childrens[0].code, childrens[1].code]
 
         self.assertEqual(result, ['000010001', '011001110'])
 
