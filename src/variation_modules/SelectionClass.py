@@ -28,7 +28,7 @@ class Selection(ABC):
         :param individuals: список взвешенных (со значением ЦФ) особей
         :return: список родителей длиной len(individuals)/2 по 2 особи
         """
-        weights = [p.rating for p in individuals]
+        weights = [p.rank for p in individuals]
         total_weight = sum(weights)
         pointer_distance = total_weight / 4
         parents = []
@@ -39,8 +39,7 @@ class Selection(ABC):
                 new_point += pointer_distance
                 if new_point > total_weight:
                     new_point = 0 + new_point - total_weight
-                else:
-                    points.append(new_point)
+                points.append(new_point)
             points = sorted(points)
             j = 0
             current_weight = 0
