@@ -20,8 +20,8 @@ class Recombination(ABC):
             for i in range(len(points)-1):
                 children_1 += twos[i % 2].code[points[i]:points[i + 1]]
                 children_2 += twos[(i + 1) % 2].code[points[i]:points[i + 1]]
-            childrens.append(children_1)
-            childrens.append(children_2)
+            childrens.append(Individual.new_individual_by_code(children_1))
+            childrens.append(Individual.new_individual_by_code(children_2))
         return childrens
 
     @staticmethod
@@ -46,8 +46,8 @@ class Recombination(ABC):
                     children_2 += twos[0].code[points[i]:points[i + 1]]
                 if random.randint(0, 100) < 20:
                     s = not s
-            childrens.append(children_1)
-            childrens.append(children_2)
+            childrens.append(Individual.new_individual_by_code(children_1))
+            childrens.append(Individual.new_individual_by_code(children_2))
         return childrens
 
     @staticmethod
@@ -67,8 +67,8 @@ class Recombination(ABC):
                 children_1 += p.code[points[i]:points[i + 1]]
                 p = random.choices(twos, weights=[50, 50], k=1)
                 children_2 += p.code[points[i]:points[i + 1]]
-            childrens.append(children_1)
-            childrens.append(children_2)
+            childrens.append(Individual.new_individual_by_code(children_1))
+            childrens.append(Individual.new_individual_by_code(children_2))
         return childrens
 
     @staticmethod
