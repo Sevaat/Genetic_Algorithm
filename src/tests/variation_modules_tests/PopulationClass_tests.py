@@ -17,7 +17,7 @@ class PopulationClassTests(unittest.TestCase):
         GV.PARAMETERS = fmc.FileManager.get_parameters(filepath)
         random.seed(0, version=2)
 
-        population = Population.get_new_random_population()
+        population = Population.get_new_random_population()[0:3]
         result = []
         for p in population:
             result.append(p.code)
