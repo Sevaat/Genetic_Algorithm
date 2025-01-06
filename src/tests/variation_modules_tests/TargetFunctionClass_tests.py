@@ -2,7 +2,6 @@ import unittest
 import src.utils.FileManagerClass as fmc
 import src.utils.GlobalVariables as GV
 from src.model.IndividualClass import Individual
-import random
 from src.variation_modules.TargetFunctionClass import TargetFunction
 
 filepath_1 = "../data_test/Data_Test_1.txt"
