@@ -2,6 +2,7 @@ from tkinter import filedialog
 from src.model.ParametersClass import *
 from src.model.genetic_algorithm.GeneticAlgorithmBuilderClass import GeneticAlgorithmBuilder
 import src.utils.GlobalVariables as GV
+import sys
 
 
 class FileManager:
@@ -62,29 +63,61 @@ class FileManager:
             for line in file:
                 data = line.strip().split(':')
                 if data[0] == 'Количество особей в популяции':
-                    parameters.number_of_individuals = int(data[1].strip())
+                    try:
+                        parameters.number_of_individuals = int(data[1].strip())
+                    except:
+                        print('Количество особей в популяции заданы не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Доля элитных особей':
-                    parameters.proportion_of_elite_individuals = float(data[1].strip())
+                    try:
+                        parameters.proportion_of_elite_individuals = float(data[1].strip())
+                    except:
+                        print('Доля элитных особей заданы не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Количество эпох':
-                    parameters.number_of_eras = int(data[1].strip())
+                    try:
+                        parameters.number_of_eras = int(data[1].strip())
+                    except:
+                        print('Количество эпох заданы не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Вероятность мутации':
-                    parameters.mutation_probability = float(data[1].strip())
+                    try:
+                        parameters.mutation_probability = float(data[1].strip())
+                    except:
+                        print('Вероятность мутации задана не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Cчетчик изменений лучшей особи':
-                    parameters.change_counter = int(data[1].strip())
-                    GV.counter = int(data[1].strip())
+                    try:
+                        parameters.change_counter = int(data[1].strip())
+                        GV.counter = int(data[1].strip())
+                    except:
+                        print('Cчетчик изменений лучшей особи задан не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Количество выводимых результатов':
-                    parameters.number_of_results = int(data[1].strip())
+                    try:
+                        parameters.number_of_results = int(data[1].strip())
+                    except:
+                        print('Количество выводимых результатов задано не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Количество точек рекомбинации':
-                    parameters.recombination_point_count = int(data[1].strip())
+                    try:
+                        parameters.recombination_point_count = int(data[1].strip())
+                    except:
+                        print('Количество точек рекомбинации задано не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 elif data[0] == 'Ген':
                     gene_sets.append(data[1].strip().split())
                 elif data[0] == 'Ген (н, к, ш)':
-                    gene_set = []
-                    start, end, step = [float(i) for i in data[1].strip().split()]
-                    while start <= end:
-                        gene_set.append(str(start))
-                        start += step
-                    gene_sets.append(gene_set)
+                    try:
+                        gene_set = []
+                        start, end, step = [float(i) for i in data[1].strip().split()]
+                        while start <= end:
+                            gene_set.append(str(start))
+                            start += step
+                        gene_sets.append(gene_set)
+                    except:
+                        print('Ген с заданным шагом задан некорректно. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 else:
                     continue
         parameters.gene_sets = gene_sets
