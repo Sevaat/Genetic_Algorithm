@@ -11,6 +11,7 @@ class GeneticAlgorithm:
         self.population_initialization = None # способ инициализации новой популяции
         self.mutation = Mutation.mutation
         self.replacement = None # тип замены популяции
+        self.user_function_reference = None # ссылка на пользовательскую функцию
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
 from abc import ABC
 from src.model.IndividualClass import *
+import src.utils.GlobalVariables as GV
+import sys
 
 
 class TargetFunction(ABC):
@@ -30,13 +32,13 @@ class TargetFunction(ABC):
         new_individuals = []
         for ind in individuals:
             if ind.overstepping():
-                '''
-                Здесь определяется пользовательская ЦФ
-                Результат целевой функции должен быть выражен численным значением
-                Значение ЦФ записывается в переменную rank, определенную ниже
-                '''
-                rank = 0
-                ind.rank = rank
+                individual_parameters = ind.transcript_individual()
+                try:
+                    ind.rank = GV.GENETIC_ALGORITHM.user_function_reference(individual_parameters)
+                except:
+                    print('Введена некорректная функция или функция принимает некорректные аргументы.')
+                    print('Проверьте правильность введенной информации и повторите попытку.')
+                    sys.exit()
                 new_individuals.append(ind)
         return new_individuals
 
