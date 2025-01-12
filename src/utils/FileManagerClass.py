@@ -118,6 +118,12 @@ class FileManager:
                     except:
                         print('Ген с заданным шагом задан некорректно. Проверьте данные и повторите расчет.')
                         sys.exit()
+                elif data[0] == 'Количество повторяющихся особей':
+                    try:
+                        parameters.number_of_recurring_individuals = int(data[1].strip())
+                    except:
+                        print('Количество повторяющихся особей задано не числом. Проверьте данные и повторите расчет.')
+                        sys.exit()
                 else:
                     continue
         parameters.gene_sets = gene_sets

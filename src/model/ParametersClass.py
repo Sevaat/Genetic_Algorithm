@@ -8,6 +8,7 @@ class Parameters:
         self.change_counter = None # счётчик изменений лучшей особи
         self.number_of_results = None # количество выводимых результатов
         self.recombination_point_count = None # количество точек рекомбинации
+        self.number_of_recurring_individuals = 0 # количество повторяющихся особей
 
 
 if __name__ == '__main__':

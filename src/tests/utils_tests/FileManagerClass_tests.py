@@ -124,7 +124,7 @@ class FileManagerClassTests(unittest.TestCase):
 
         result = parameters.number_of_individuals
 
-        self.assertEqual(result, 100)
+        self.assertEqual(result, 10)
 
     def test_get_parameters_2(self):
         filepath = filepath_1
@@ -182,6 +182,14 @@ class FileManagerClassTests(unittest.TestCase):
 
         self.assertEqual(result, str([['0', '1', '2', '3', '4'], ['5.0', '6.0', '7.0', '8.0', '9.0'],
                                       ['10', '11', '12', '13', '14']]))
+
+    def test_get_parameters_9(self):
+        filepath = filepath_1
+        parameters = fmc.FileManager.get_parameters(filepath)
+
+        result = 0
+
+        self.assertEqual(result, 0)
 
 
 if __name__ == '__main__':
