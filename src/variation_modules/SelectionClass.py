@@ -13,7 +13,7 @@ class Selection(ABC):
         """
         weights = [p.rank for p in individuals]
         parents = []
-        while len(parents) < int(len(individuals)/2):
+        while len(parents) < int(len(individuals)):
             p_1, p_2 = random.choices(individuals, weights=weights, k=2)
             if p_1.code != p_2.code:
                 parents.append([p_1, p_2])
@@ -32,7 +32,7 @@ class Selection(ABC):
         total_weight = sum(weights)
         pointer_distance = total_weight / 4
         parents = []
-        while len(parents) < int(len(individuals)/2):
+        while len(parents) < int(len(individuals)):
             points = [random.uniform(0, total_weight)]
             new_point = points[0]
             for i in range(3):

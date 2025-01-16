@@ -13,6 +13,8 @@ class Replacement(ABC):
         :return: список элитных особей и лучших особей-мутантов в количестве не превышающем максимального значения популяции
         """
         n_elite = int(GV.PARAMETERS.proportion_of_elite_individuals * GV.PARAMETERS.number_of_individuals)
+        if len(individuals_1)-n_elite > len(individuals_2):
+            n_elite = len(individuals_1)-n_elite
         individuals_1 = individuals_1[:n_elite]
         individuals_1 += individuals_2
         individuals_1 = GV.GENETIC_ALGORITHM.purpose(individuals_1)

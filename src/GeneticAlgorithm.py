@@ -8,9 +8,9 @@ def genetic_algorithm():
     era = 0
     while era < GV.PARAMETERS.number_of_eras:
         parents = GV.GENETIC_ALGORITHM.parent_selection(population)
-        childrens = GV.GENETIC_ALGORITHM.recombination(parents)
+        childrens = GV.GENETIC_ALGORITHM.recombination(population, parents)
         del parents
-        mutants = GV.GENETIC_ALGORITHM.mutation(childrens)
+        mutants = GV.GENETIC_ALGORITHM.mutation(population, childrens)
         del childrens
         mutants = GV.GENETIC_ALGORITHM.target_function(mutants)
         population = GV.GENETIC_ALGORITHM.replacement(population, mutants)
