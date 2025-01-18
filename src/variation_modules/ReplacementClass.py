@@ -15,11 +15,11 @@ class Replacement(ABC):
         n_elite = int(GV.PARAMETERS.proportion_of_elite_individuals * GV.PARAMETERS.number_of_individuals)
         if len(individuals_1)-n_elite > len(individuals_2):
             n_elite = len(individuals_1)-n_elite
-        individuals_1 = individuals_1[:n_elite]
-        individuals_1 += individuals_2
-        individuals_1 = GV.GENETIC_ALGORITHM.purpose(individuals_1)
-        individuals_1 = individuals_1[:GV.PARAMETERS.number_of_individuals]
-        return individuals_1
+        new_individuals = individuals_1[:n_elite]
+        new_individuals += individuals_2
+        new_individuals = GV.GENETIC_ALGORITHM.purpose(new_individuals)
+        new_individuals = new_individuals[:GV.PARAMETERS.number_of_individuals]
+        return new_individuals
 
     @staticmethod
     def simple_cut(individuals_1: [Individual], individuals_2: [Individual]) -> [Individual]:
@@ -29,10 +29,10 @@ class Replacement(ABC):
         :param individuals_2: список новых особей-мутантов
         :return: список лучших особей и особей-мутантов в количестве не превышающем максимального значения популяции
         """
-        individuals_1 += individuals_2
-        individuals_1 = GV.GENETIC_ALGORITHM.purpose(individuals_1)
-        individuals_1 = individuals_1[:GV.PARAMETERS.number_of_individuals]
-        return individuals_1
+        new_individuals = individuals_1 + individuals_2
+        new_individuals = GV.GENETIC_ALGORITHM.purpose(new_individuals)
+        new_individuals = new_individuals[:GV.PARAMETERS.number_of_individuals]
+        return new_individuals
     
     
 if __name__ == '__main__':
