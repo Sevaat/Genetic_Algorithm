@@ -25,9 +25,9 @@ class Stops(ABC):
         """
         Останов по количеству эпох имеется по-умолчанию
         :param individuals: список отсортированных особей
-        :return: вывод True
+        :return: вывод False
         """
-        return True
+        return False
 
 
 if __name__ == '__main__':
