@@ -20,8 +20,7 @@ class Purpose(ABC):
         :param individuals: список особей
         :return: сортированный список особей от большего к меньшему
         """
-        individuals = sorted(individuals, key=lambda ind: ind.rank)
-        individuals.reverse()
+        individuals = sorted(individuals, key=lambda ind: ind.rank, reverse=True)
         return individuals
 
 
