@@ -1,7 +1,7 @@
 import unittest
 import src.utils.GlobalVariables as GV
-from src.utils.FileManagerClass import FileManager as fm
-import random
+from src.utils.FileManagerClass import FileManager
+from src.model.IndividualClass import Individual
 from src.variation_modules.SelectionClass import Selection
 
 filepath_1 = "../data_test/Data_Test_1.txt"
@@ -10,44 +10,41 @@ filepath_3 = "../data_test/Data_Test_3.txt"
 
 
 class SelectionClassTests(unittest.TestCase):
-
-    def test_standart_selection(self):
+    def test_get_weights_1(self):
         filepath = filepath_1
-        GV.GENETIC_ALGORITHM = fm.get_genetic_algorithm(filepath)
-        GV.PARAMETERS = fm.get_parameters(filepath)
-        random.seed(0, version=2)
+        GV.GENETIC_ALGORITHM = FileManager.get_genetic_algorithm(filepath)
+        GV.PARAMETERS = FileManager.get_parameters(filepath)
 
-        population = GV.GENETIC_ALGORITHM.population_initialization()
-        population = GV.GENETIC_ALGORITHM.target_function(population)
+        population = []
+        for i in range(10):
+            ind = Individual()
+            ind.rank = i
+            population.append(ind)
 
-        # [21.0, 24.0, 23.0, 22.0, 22.0, 20.0, 25.0, 18.0, 20.0, 21.0]
+        result = Selection.get_weights(population)
 
-        parents = Selection.standart_selection(population)
+        s = sum([ind.rank for ind in population])
+        expected_result = [p.rank / s for p in population]
 
-        result = []
-        for p in parents:
-            result.append([p[0].rank, p[1].rank])
+        self.assertEqual(result, expected_result)
 
-        self.assertEqual(result, [[22.0, 20.0], [22.0, 20.0], [23.0, 18.0], [20.0, 21.0], [25.0, 22.0]])
+    def test_get_weights_2(self):
+        filepath = filepath_2
+        GV.GENETIC_ALGORITHM = FileManager.get_genetic_algorithm(filepath)
+        GV.PARAMETERS = FileManager.get_parameters(filepath)
 
-    def test_stochastic_universal_sampling(self):
-        filepath = filepath_1
-        GV.GENETIC_ALGORITHM = fm.get_genetic_algorithm(filepath)
-        GV.PARAMETERS = fm.get_parameters(filepath)
-        random.seed(0, version=2)
+        population = []
+        for i in range(10):
+            ind = Individual()
+            ind.rank = i
+            population.append(ind)
 
-        population = GV.GENETIC_ALGORITHM.population_initialization()
-        population = GV.GENETIC_ALGORITHM.target_function(population)
+        result = Selection.get_weights(population)
 
-        # [21.0, 24.0, 23.0, 22.0, 22.0, 20.0, 25.0, 18.0, 20.0, 21.0]
+        s = sum([ind.rank for ind in population])
+        expected_result = [(s - p.rank) / s for p in population]
 
-        parents = Selection.stochastic_universal_sampling(population)
-
-        result = []
-        for p in parents:
-            result.append([p[0].rank, p[1].rank])
-
-        self.assertEqual(result, [[24.0, 22.0], [24.0, 25.0], [24.0, 21.0], [22.0, 25.0], [22.0, 21.0], [25.0, 21.0]])
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == '__main__':
