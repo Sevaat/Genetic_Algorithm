@@ -14,7 +14,7 @@ class FileManager:
             initialfile='Result.txt'
         )
         if filepath != "":
-            with open(filepath, "w") as file:
+            with open(filepath, "w", encoding="utf-8") as file:
                 for res in result:
                     file.write(f'{res}\n')
 
@@ -33,7 +33,7 @@ class FileManager:
     def get_genetic_algorithm(filepath):
         ga = None
         gab = GeneticAlgorithmBuilder()
-        with open(filepath, "r") as file:
+        with open(filepath, "r", encoding="utf-8") as file:
             for line in file:
                 data = line.strip().split(':')
                 if data[0] == 'Тип выбора родителей':
@@ -59,7 +59,7 @@ class FileManager:
     def get_parameters(filepath):
         parameters = Parameters()
         gene_sets = []
-        with open(filepath, "r") as file:
+        with open(filepath, "r", encoding="utf-8") as file:
             for line in file:
                 data = line.strip().split(':')
                 if data[0] == 'Количество особей в популяции':
