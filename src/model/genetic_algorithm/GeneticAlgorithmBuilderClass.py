@@ -140,7 +140,3 @@ class GeneticAlgorithmReplacementBuilder(GeneticAlgorithmBuilder):
         else:
             self.genetic_algorithm.replacement = None
         return self
-
-
-if __name__ == '__main__':
-    pass
