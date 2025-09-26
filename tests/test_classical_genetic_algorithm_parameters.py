@@ -2,7 +2,7 @@ import pytest
 
 from src.model.classic.classical_genetic_algorithm_parameters import CGAParameters
 
-def test_parameters_valid():
+def test_classical_genetic_algorithm_parameters_valid():
     params = CGAParameters()
     setattr(params, 'number_of_individuals', '10')
     assert getattr(params, 'number_of_individuals') == 10
@@ -36,7 +36,7 @@ def test_parameters_valid():
     params.gene_sets = data
     assert params.gene_sets == [['1', '2'], ['3.0', '4.0', '5.0']]
 
-def test_parameters_invalid_value():
+def test_classical_genetic_algorithm_parameters_invalid_value():
     params = CGAParameters()
     with pytest.raises(ValueError):
         setattr(params, 'number_of_individuals', '-1')
@@ -62,7 +62,7 @@ def test_parameters_invalid_value():
     with pytest.raises(ValueError):
         setattr(params, 'number_of_recurring_individuals', '-4')
 
-def test_parameters_invalid_type():
+def test_classical_genetic_algorithm_parameters_invalid_type():
     params = CGAParameters()
     with pytest.raises(TypeError):
         setattr(params, 'number_of_individuals', 'abc')

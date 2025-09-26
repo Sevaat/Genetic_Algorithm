@@ -1,14 +1,12 @@
 from typing import Callable
 
-from src.calculations.MutationClass import Mutation
 from src.variation_modules.PopulationClass import Population
 from src.variation_modules.PurposeClass import Purpose
 from src.variation_modules.RecombinationClass import Recombination
 from src.variation_modules.ReplacementClass import Replacement
 from src.variation_modules.SelectionClass import Selection
 from src.variation_modules.StopsClass import Stops
-
-settings = None
+from src.calculations.MutationClass import Mutation
 
 class CGASettings:
     """
@@ -30,6 +28,8 @@ class CGASettings:
 
     @parent_selection.setter
     def parent_selection(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._parent_selection = value
         else:
@@ -41,6 +41,8 @@ class CGASettings:
 
     @stops.setter
     def stops(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._stops = value
         else:
@@ -52,6 +54,8 @@ class CGASettings:
 
     @purpose.setter
     def purpose(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._purpose = value
         else:
@@ -63,6 +67,8 @@ class CGASettings:
 
     @recombination.setter
     def recombination(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._recombination = value
         else:
@@ -74,6 +80,8 @@ class CGASettings:
 
     @target_function.setter
     def target_function(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._target_function = value
         else:
@@ -85,6 +93,8 @@ class CGASettings:
 
     @population_initialization.setter
     def population_initialization(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._population_initialization = value
         else:
@@ -96,6 +106,8 @@ class CGASettings:
 
     @mutation.setter
     def mutation(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._mutation = value
         else:
@@ -107,6 +119,8 @@ class CGASettings:
 
     @replacement.setter
     def replacement(self, value: Callable):
+        if value is None:
+            raise TypeError('Значение None не может быть оператором.')
         if isinstance(value, Callable):
             self._replacement = value
         else:
@@ -188,7 +202,18 @@ class CGASettingsPopulationInitializationBuilder(CGASettingsRecombinationBuilder
             self.settings.population_initialization = None
         return self
 
-class CGASettingsReplacementBuilder(CGASettingsPopulationInitializationBuilder):
+class CGASettingsMutationInitializationBuilder(CGASettingsPopulationInitializationBuilder):
+    """
+    Тип мутации особи
+    """
+    def mutation(self, mutation):
+        if mutation == 'ПРОСТАЯ МУТАЦИЯ':
+            self.settings.mutation = Mutation.mutation
+        else:
+            self.settings.mutation = None
+        return self
+
+class CGASettingsReplacementBuilder(CGASettingsMutationInitializationBuilder):
     """
     Тип отбора лучших особей
     """
@@ -200,3 +225,17 @@ class CGASettingsReplacementBuilder(CGASettingsPopulationInitializationBuilder):
         else:
             self.settings.replacement = None
         return self
+
+def get_setting(settings: dict, function: Callable):
+    settings_builder = CGASettingsReplacementBuilder()
+    ga_settings = settings_builder. \
+        parent_selection(settings['parent_selection']). \
+        stops(settings['stops']). \
+        purpose(settings['purpose']). \
+        recombination(settings['recombination']). \
+        population_initialization(settings['population_initialization']). \
+        mutation(settings['mutation']). \
+        replacement(settings['replacement']). \
+        build()
+    ga_settings.target_function = function
+    return ga_settings

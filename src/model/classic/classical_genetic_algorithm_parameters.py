@@ -1,7 +1,5 @@
 from src.utils.data_verification import DataVerification
-from typing import List, Any
-
-parameters = None
+from typing import List
 
 class CGAParameters:
     def __init__(self):
@@ -100,3 +98,15 @@ class CGAParameters:
                 gene_sets.append(v.split())
         self._gene_sets = gene_sets
 
+def get_parameters(parameters: dict):
+    ga_parameters = CGAParameters()
+    ga_parameters.number_of_individuals = parameters['number_of_individuals']
+    ga_parameters.proportion_of_elite_individuals = parameters['proportion_of_elite_individuals']
+    ga_parameters.number_of_eras = parameters['number_of_eras']
+    ga_parameters.gene_sets = parameters['gene_sets']
+    ga_parameters.mutation_probability = parameters['mutation_probability']
+    ga_parameters.change_counter = parameters['change_counter']
+    ga_parameters.number_of_results = parameters['number_of_results']
+    ga_parameters.recombination_point_count = parameters['recombination_point_count']
+    ga_parameters.number_of_recurring_individuals = parameters['number_of_recurring_individuals']
+    return ga_parameters
