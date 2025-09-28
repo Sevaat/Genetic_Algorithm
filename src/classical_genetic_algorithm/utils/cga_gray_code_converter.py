@@ -1,5 +1,4 @@
 from abc import ABC
-import src.utils.GlobalVariables as GV
 
 
 class GrayCodeConverter(ABC):
@@ -9,8 +8,10 @@ class GrayCodeConverter(ABC):
         Определение наибольших разрядов параметров особи в бинарной кодировке
         :return: список значений наибольших разрядов
         """
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        config = Config()
         maximum_discharge = []
-        for gene_set in GV.PARAMETERS.gene_sets:
+        for gene_set in config.parameters.gene_sets:
             value = len(gene_set) - 1
             discharge = bin(value)[2:]
             maximum_discharge.append(len(discharge))
@@ -56,7 +57,3 @@ class GrayCodeConverter(ABC):
             genotype.append(int(binary, 2))
             j += md
         return genotype
-
-
-if __name__ == '__main__':
-    pass

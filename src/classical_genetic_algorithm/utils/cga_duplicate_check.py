@@ -1,6 +1,5 @@
 from abc import ABC
-from src.model.IndividualClass import Individual
-import src.utils.GlobalVariables as GV
+from src.classical_genetic_algorithm.model.cga_individual import Individual
 
 
 class DuplicateCheck(ABC):
@@ -12,14 +11,16 @@ class DuplicateCheck(ABC):
         :param individual: особь, количество которой подсчитывается
         :return: True - если количество вхождений не превышено; False - иначе
         """
-        if GV.PARAMETERS.number_of_recurring_individuals == 0:
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        config = Config()
+        if config.parameters.number_of_recurring_individuals == 0:
             return True
         else:
             n = 0
             for ind in population:
-                if individual.code == ind.code:
+                if individual == ind:
                     n += 1
-            if GV.PARAMETERS.number_of_recurring_individuals > n:
+            if config.parameters.number_of_recurring_individuals > n:
                 return True
             else:
                 return False
