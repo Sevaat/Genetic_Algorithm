@@ -1,20 +1,19 @@
 from abc import ABC
 import random
-from src.model.IndividualClass import Individual
-import src.utils.GlobalVariables as GV
-from src.utils.DuplicateCheckClass import DuplicateCheck
+from src.classical_genetic_algorithm.model.cga_individual import Individual
+from src.classical_genetic_algorithm.utils.cga_duplicate_check import DuplicateCheck
 
 
 class Recombination(ABC):
     @staticmethod
-    def point_crossing(population: [Individual], parents: [[Individual]]) -> [Individual]:
+    def point_crossing(population: list[Individual], parents: list[tuple[Individual, Individual]]) -> list[Individual]:
         """
         Точечное скрещивание (случайная точка (точки) для обмена частью генотипа особей)
         :param population: список особей популяции
         :param parents: список родителей
         :return: список детей
         """
-        childrens = []
+        children = []
         for twos in parents:
             points = Recombination.get_points(len(twos[0].code))
             children_1 = ''
@@ -22,18 +21,18 @@ class Recombination(ABC):
             for i in range(len(points)-1):
                 children_1 += twos[i % 2].code[points[i]:points[i + 1]]
                 children_2 += twos[(i + 1) % 2].code[points[i]:points[i + 1]]
-            childrens = Recombination.child_addition(population, children_1, children_2, childrens)
-        return childrens
+            children = Recombination.child_addition(population, children_1, children_2, children)
+        return children
 
     @staticmethod
-    def segmental_crossing(population: [Individual], parents: [[Individual]]) -> [Individual]:
+    def segmental_crossing(population: list[Individual], parents: list[tuple[Individual, Individual]]) -> list[Individual]:
         """
         Сегментное скрещивание (случайная точка (точки) для обмена частью генотипа особей с вероятностью 20%)
         :param population: список особей популяции
         :param parents: список родителей
         :return: список детей
         """
-        childrens = []
+        children = []
         for twos in parents:
             points = Recombination.get_points(len(twos[0].code))
             children_1 = ''
@@ -48,18 +47,18 @@ class Recombination(ABC):
                     children_2 += twos[0].code[points[i]:points[i + 1]]
                 if random.randint(0, 100) < 20:
                     s = not s
-            childrens = Recombination.child_addition(population, children_1, children_2, childrens)
-        return childrens
+            children = Recombination.child_addition(population, children_1, children_2, children)
+        return children
 
     @staticmethod
-    def even_crossing(population: [Individual], parents: [[Individual]]) -> [Individual]:
+    def even_crossing(population: list[Individual], parents: list[tuple[Individual, Individual]]) -> list[Individual]:
         """
         Равномерное скрещивание (выбор каждого детского признака от родителей с вероятностью 50%)
         :param population: список особей популяции
         :param parents: список родителей
         :return: список детей
         """
-        childrens = []
+        children = []
         for twos in parents:
             points = Recombination.get_points(len(twos[0].code))
             children_1 = ''
@@ -69,39 +68,38 @@ class Recombination(ABC):
                 children_1 += p.code[points[i]:points[i + 1]]
                 p = random.choices(twos, weights=[50, 50], k=1)
                 children_2 += p.code[points[i]:points[i + 1]]
-            childrens = Recombination.child_addition(population, children_1, children_2, childrens)
-        return childrens
+            children = Recombination.child_addition(population, children_1, children_2, children)
+        return children
 
     @staticmethod
-    def get_points(length: int) -> [int]:
+    def get_points(length: int) -> list[int]:
         """
         Получение точек для рекомбинации
         :param length: длина закодированной последовательности признаков
         :return: список точек для рекомбинации
         """
-        points = [random.randint(1, length - 2) for i in range(GV.PARAMETERS.recombination_point_count)]
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        config = Config()
+        points = [random.randint(1, length - 2) for i in range(config.settings.recombination_point_count)]
         points.append(0)
         points.append(length)
         points = sorted(points)
         return points
 
     @staticmethod
-    def child_addition(population: [Individual], children_1: str, children_2: str, childrens: [Individual]) -> [Individual]:
+    def child_addition(population: list[Individual], children_1: str, children_2: str, children: list[Individual]) -> list[Individual]:
         """
         Проверка на дубликаты и добавление новых особей в список детей
         :param population: список особей популяции
         :param children_1: ребенок 1
         :param children_2: ребенок 2
-        :param childrens: список детей
+        :param children: список детей
         :return: список детей с возможными добавлениями
         """
         children_1 = Individual.new_individual_by_code(children_1)
         children_2 = Individual.new_individual_by_code(children_2)
         if DuplicateCheck.individual_addition(population, children_1):
-            childrens.append(children_1)
+            children.append(children_1)
         if DuplicateCheck.individual_addition(population, children_2):
-            childrens.append(children_2)
-        return childrens
-
-if __name__ == '__main__':
-    pass
+            children.append(children_2)
+        return children
