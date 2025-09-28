@@ -33,18 +33,18 @@ class Recombination(ABC):
         :return: список детей
         """
         children = []
-        for twos in parents:
-            points = Recombination.get_points(len(twos[0].code))
+        for par_par in parents:
+            points = Recombination.get_points(len(par_par[0].code))
             children_1 = ''
             children_2 = ''
             s = True
             for i in range(0, len(points) - 1):
                 if s:
-                    children_1 += twos[0].code[points[i]:points[i + 1]]
-                    children_2 += twos[1].code[points[i]:points[i + 1]]
+                    children_1 += par_par[0].code[points[i]:points[i + 1]]
+                    children_2 += par_par[1].code[points[i]:points[i + 1]]
                 else:
-                    children_1 += twos[1].code[points[i]:points[i + 1]]
-                    children_2 += twos[0].code[points[i]:points[i + 1]]
+                    children_1 += par_par[1].code[points[i]:points[i + 1]]
+                    children_2 += par_par[0].code[points[i]:points[i + 1]]
                 if random.randint(0, 100) < 20:
                     s = not s
             children = Recombination.child_addition(population, children_1, children_2, children)
@@ -59,15 +59,15 @@ class Recombination(ABC):
         :return: список детей
         """
         children = []
-        for twos in parents:
-            points = Recombination.get_points(len(twos[0].code))
+        for par_par in parents:
+            points = Recombination.get_points(len(par_par[0].code))
             children_1 = ''
             children_2 = ''
             for i in range(0, len(points) - 1):
-                p = random.choices(twos, weights=[50, 50], k=1)
-                children_1 += p.code[points[i]:points[i + 1]]
-                p = random.choices(twos, weights=[50, 50], k=1)
-                children_2 += p.code[points[i]:points[i + 1]]
+                p = random.choices(list(par_par), weights=[50, 50], k=1)
+                children_1 += p[0].code[points[i]:points[i + 1]]
+                p = random.choices(list(par_par), weights=[50, 50], k=1)
+                children_2 += p[0].code[points[i]:points[i + 1]]
             children = Recombination.child_addition(population, children_1, children_2, children)
         return children
 

@@ -10,7 +10,7 @@ def start():
     era = 0
     while era < config.parameters.number_of_eras:
         parents = config.settings.parent_selection(population)
-        childrens = config.settings.recombination(population, parents)
+        children = config.settings.recombination(population, parents)
 
 
 

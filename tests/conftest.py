@@ -70,3 +70,36 @@ def cga_population_with_tf(cga_population):
     population[8].rank = 14
     population[9].rank = 15
     return population
+
+@pytest.fixture
+def cga_parents(cga_population_with_tf):
+    parents = [
+        (cga_population_with_tf[0], cga_population_with_tf[1]),
+        (cga_population_with_tf[0], cga_population_with_tf[2]),
+        (cga_population_with_tf[0], cga_population_with_tf[3]),
+        (cga_population_with_tf[0], cga_population_with_tf[4]),
+        (cga_population_with_tf[0], cga_population_with_tf[5]),
+        (cga_population_with_tf[0], cga_population_with_tf[6]),
+        (cga_population_with_tf[0], cga_population_with_tf[7]),
+        (cga_population_with_tf[0], cga_population_with_tf[8]),
+        (cga_population_with_tf[0], cga_population_with_tf[9]),
+        (cga_population_with_tf[1], cga_population_with_tf[2])
+    ]
+    return parents
+
+@pytest.fixture
+def cga_children(cga_config):
+    from src.classical_genetic_algorithm.model.cga_individual import Individual
+    children = [
+        Individual().new_individual_by_code('000001'),
+        Individual().new_individual_by_code('010100'),
+        Individual().new_individual_by_code('001101'),
+        Individual().new_individual_by_code('110100'),
+        Individual().new_individual_by_code('001111'),
+        Individual().new_individual_by_code('110000'),
+        Individual().new_individual_by_code('001111'),
+        Individual().new_individual_by_code('000000'),
+        Individual().new_individual_by_code('000001'),
+        Individual().new_individual_by_code('111100'),
+    ]
+    return children
