@@ -1,9 +1,8 @@
 from abc import ABC
 from typing import Callable
 
-from src.model.config import Config
-from src.utils.file_manager import FileManager
-from src.GeneticAlgorithm import genetic_algorithm
+from src.classical_genetic_algorithm.utils.cga_file_manager import FileManager
+from src.classical_genetic_algorithm.cga_main import start
 
 class EvolutionaryAlgorithm(ABC):
     @staticmethod
@@ -15,7 +14,10 @@ class EvolutionaryAlgorithm(ABC):
         :return: None
         """
         setting, parameters = FileManager.open_file(filepath)
-        config = Config(setting, parameters, user_function)
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        Config(setting, parameters, user_function)
         del setting, parameters
-        result = genetic_algorithm()
-        FileManager.save_file(result)
+        result = start()
+
+
+        # FileManager.save_file(result)
