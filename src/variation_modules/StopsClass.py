@@ -1,6 +1,6 @@
 from abc import ABC
 import src.utils.GlobalVariables as GV
-from src.model.IndividualClass import Individual
+from src.classical_genetic_algorithm.model.cga_individual import Individual
 
 
 class Stops(ABC):

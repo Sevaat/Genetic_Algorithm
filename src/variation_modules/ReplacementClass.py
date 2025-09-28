@@ -1,5 +1,5 @@
 from abc import ABC
-from src.model.IndividualClass import Individual
+from src.classical_genetic_algorithm.model.cga_individual import Individual
 import src.utils.GlobalVariables as GV
 
 

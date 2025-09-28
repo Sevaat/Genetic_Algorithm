@@ -1,8 +1,8 @@
 from abc import ABC
 import random
-from src.model.IndividualClass import Individual
+from src.classical_genetic_algorithm.model.cga_individual import Individual
 import src.utils.GlobalVariables as GV
-from src.utils.DuplicateCheckClass import DuplicateCheck
+from src.classical_genetic_algorithm.utils.cga_duplicate_check import DuplicateCheck
 
 
 class Mutation(ABC):
