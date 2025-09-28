@@ -14,13 +14,13 @@ class Recombination(ABC):
         :return: список детей
         """
         children = []
-        for twos in parents:
-            points = Recombination.get_points(len(twos[0].code))
+        for par_par in parents:
+            points = Recombination.get_points(len(par_par[0].code))
             children_1 = ''
             children_2 = ''
             for i in range(len(points)-1):
-                children_1 += twos[i % 2].code[points[i]:points[i + 1]]
-                children_2 += twos[(i + 1) % 2].code[points[i]:points[i + 1]]
+                children_1 += par_par[i % 2].code[points[i]:points[i + 1]]
+                children_2 += par_par[(i + 1) % 2].code[points[i]:points[i + 1]]
             children = Recombination.child_addition(population, children_1, children_2, children)
         return children
 
@@ -80,7 +80,7 @@ class Recombination(ABC):
         """
         from src.classical_genetic_algorithm.options_ga.cga_config import Config
         config = Config()
-        points = [random.randint(1, length - 2) for i in range(config.settings.recombination_point_count)]
+        points = [random.randint(1, length - 2) for i in range(config.parameters.recombination_point_count)]
         points.append(0)
         points.append(length)
         points = sorted(points)
@@ -97,9 +97,13 @@ class Recombination(ABC):
         :return: список детей с возможными добавлениями
         """
         children_1 = Individual.new_individual_by_code(children_1)
+        if children_1 is not None:
+            if DuplicateCheck.individual_addition(population, children_1):
+                children.append(children_1)
+
         children_2 = Individual.new_individual_by_code(children_2)
-        if DuplicateCheck.individual_addition(population, children_1):
-            children.append(children_1)
-        if DuplicateCheck.individual_addition(population, children_2):
-            children.append(children_2)
+        if children_2 is not None:
+            if DuplicateCheck.individual_addition(population, children_2):
+                children.append(children_2)
+
         return children

@@ -1,4 +1,6 @@
 import random
+from typing import Union, Self
+
 from src.classical_genetic_algorithm.utils.cga_gray_code_converter import GrayCodeConverter
 
 
@@ -45,16 +47,19 @@ class Individual:
                 break
         return flag
 
-    @staticmethod
-    def new_individual_by_code(code):
+    @classmethod
+    def new_individual_by_code(cls, code: str) -> Union[Self, None]:
         """
         Создание особи по коду Грея
         :param code: код Грея особи
         :return: особь
         """
-        individual = Individual()
+        individual = cls()
         individual.code = code
-        return individual
+        if individual.overstepping():
+            return individual
+        else:
+            return None
 
 class IndividualFactory:
     @staticmethod
