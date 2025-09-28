@@ -1,7 +1,7 @@
 from typing import Callable
 
-from src.model.classic.classical_genetic_algorithm_parameters import get_parameters
-from src.model.classic.classical_genetic_algorithm_settings import get_setting
+from src.classical_genetic_algorithm.options_ga.cga_parameters import get_parameters
+from src.classical_genetic_algorithm.options_ga.cga_settings import get_settings
 
 
 def singleton(class_):
@@ -12,10 +12,11 @@ def singleton(class_):
         return instances[class_]
     return get_instance
 
+
 @singleton
 class Config:
     def __init__(self, settings: dict, parameters: dict, function: Callable):
-        self.__settings = get_setting(settings, function)
+        self.__settings = get_settings(settings, function)
         self.__parameters = get_parameters(parameters)
 
     @property

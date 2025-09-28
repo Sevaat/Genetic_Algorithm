@@ -1,6 +1,6 @@
 import pytest
 
-from src.utils.data_verification import DataVerification
+from src.classical_genetic_algorithm.utils.cga_data_verification import DataVerification
 
 def test_is_int():
     assert DataVerification.is_int("123") == True

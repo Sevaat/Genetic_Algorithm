@@ -1,10 +1,10 @@
 from typing import Callable
 
-from src.variation_modules.PopulationClass import Population
+from src.classical_genetic_algorithm.model.cga_population_initialization import Population
 from src.variation_modules.PurposeClass import Purpose
-from src.variation_modules.RecombinationClass import Recombination
+from src.classical_genetic_algorithm.model.cga_recombination import Recombination
 from src.variation_modules.ReplacementClass import Replacement
-from src.variation_modules.SelectionClass import Selection
+from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
 from src.variation_modules.StopsClass import Stops
 from src.calculations.MutationClass import Mutation
 
@@ -13,14 +13,14 @@ class CGASettings:
     Настройки классического генетического алгоритма
     """
     def __init__(self):
-        self._parent_selection = None # тип выбора родителей
-        self._stops = None # условия останова
-        self._purpose = None # цель оптимизации (min, max)
-        self._recombination = None # тип рекомбинации
-        self._target_function = None # целевая функция
-        self._population_initialization = None # способ инициализации новой популяции
-        self._mutation = None
-        self._replacement = None # тип замены популяции
+        self._parent_selection = None               # тип выбора родителей
+        self._stops = None                          # условия останова
+        self._purpose = None                        # цель оптимизации (min, max)
+        self._recombination = None                  # тип рекомбинации
+        self._target_function = None                # целевая функция
+        self._population_initialization = None      # способ инициализации новой популяции
+        self._mutation = None                       # тип мутации
+        self._replacement = None                    # тип замены популяции
 
     @property
     def parent_selection(self):
@@ -143,7 +143,7 @@ class CGASettingsParentSelectionBuilder(CGASettingsBuilder):
     """
     def parent_selection(self, selection):
         if selection == 'СТАНДАРНЫЙ':
-            self.settings.parent_selection = Selection.standart_selection
+            self.settings.parent_selection = Selection.standard_selection
         elif selection == 'СТОХАСТИЧЕСКАЯ УНИВЕРСАЛЬНАЯ ВЫБОРКА':
             self.settings.parent_selection = Selection.stochastic_universal_sampling
         else:
@@ -226,7 +226,7 @@ class CGASettingsReplacementBuilder(CGASettingsMutationInitializationBuilder):
             self.settings.replacement = None
         return self
 
-def get_setting(settings: dict, function: Callable):
+def get_settings(settings: dict, function: Callable):
     settings_builder = CGASettingsReplacementBuilder()
     ga_settings = settings_builder. \
         parent_selection(settings['parent_selection']). \

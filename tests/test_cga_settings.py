@@ -1,16 +1,15 @@
 import pytest
 
-from src.calculations.MutationClass import Mutation
-from src.model.classic.classical_genetic_algorithm_settings import CGASettingsReplacementBuilder
-from src.variation_modules.PopulationClass import Population
-from src.variation_modules.PurposeClass import Purpose
-from src.variation_modules.RecombinationClass import Recombination
-from src.variation_modules.ReplacementClass import Replacement
-from src.variation_modules.SelectionClass import Selection
-from src.variation_modules.StopsClass import Stops
-
 
 def test_classical_genetic_algorithm_settings_valid():
+    from src.calculations.MutationClass import Mutation
+    from src.classical_genetic_algorithm.model.cga_population_initialization import Population
+    from src.variation_modules.PurposeClass import Purpose
+    from src.classical_genetic_algorithm.model.cga_recombination import Recombination
+    from src.variation_modules.ReplacementClass import Replacement
+    from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
+    from src.variation_modules.StopsClass import Stops
+    from src.classical_genetic_algorithm.options_ga.cga_settings import get_settings
     def my_func():
         pass
     settings = {
@@ -23,20 +22,9 @@ def test_classical_genetic_algorithm_settings_valid():
         'replacement': 'ЭЛИТА'
     }
 
-    settings_builder = CGASettingsReplacementBuilder()
-    ga_settings = settings_builder. \
-        parent_selection(settings['parent_selection']). \
-        stops(settings['stops']). \
-        purpose(settings['purpose']). \
-        recombination(settings['recombination']). \
-        population_initialization(settings['population_initialization']). \
-        mutation(settings['mutation']). \
-        replacement(settings['replacement']). \
-        build()
-    ga_settings.target_function = my_func
+    ga_settings = get_settings(settings, my_func)
 
-
-    assert ga_settings.parent_selection == Selection.standart_selection
+    assert ga_settings.parent_selection == Selection.standard_selection
     assert ga_settings.stops == Stops.stopping_by_the_number_of_eras
     assert ga_settings.purpose == Purpose.sort_by_more
     assert ga_settings.recombination == Recombination.point_crossing
@@ -55,17 +43,7 @@ def test_classical_genetic_algorithm_settings_valid():
         'replacement': 'ПРОСТОЙ СРЕЗ'
     }
 
-    settings_builder = CGASettingsReplacementBuilder()
-    ga_settings = settings_builder. \
-        parent_selection(settings['parent_selection']). \
-        stops(settings['stops']). \
-        purpose(settings['purpose']). \
-        recombination(settings['recombination']). \
-        population_initialization(settings['population_initialization']). \
-        mutation(settings['mutation']). \
-        replacement(settings['replacement']). \
-        build()
-    ga_settings.target_function = my_func
+    ga_settings = get_settings(settings, my_func)
 
     assert ga_settings.parent_selection == Selection.stochastic_universal_sampling
     assert ga_settings.stops == Stops.stopping_for_the_best
@@ -86,17 +64,7 @@ def test_classical_genetic_algorithm_settings_valid():
         'replacement': 'ПРОСТОЙ СРЕЗ'
     }
 
-    settings_builder = CGASettingsReplacementBuilder()
-    ga_settings = settings_builder. \
-        parent_selection(settings['parent_selection']). \
-        stops(settings['stops']). \
-        purpose(settings['purpose']). \
-        recombination(settings['recombination']). \
-        population_initialization(settings['population_initialization']). \
-        mutation(settings['mutation']). \
-        replacement(settings['replacement']). \
-        build()
-    ga_settings.target_function = my_func
+    ga_settings = get_settings(settings, my_func)
 
     assert ga_settings.parent_selection == Selection.stochastic_universal_sampling
     assert ga_settings.stops == Stops.stopping_for_the_best
@@ -108,6 +76,7 @@ def test_classical_genetic_algorithm_settings_valid():
     assert ga_settings.replacement == Replacement.simple_cut
 
 def test_classical_genetic_algorithm_settings_invalid():
+    from src.classical_genetic_algorithm.options_ga.cga_settings import CGASettingsReplacementBuilder
     def my_func():
         pass
     with pytest.raises(TypeError):

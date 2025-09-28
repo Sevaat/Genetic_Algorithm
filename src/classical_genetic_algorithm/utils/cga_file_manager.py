@@ -2,10 +2,10 @@ import os
 from pathlib import Path
 from abc import ABC
 from datetime import datetime
-from typing import List, Tuple
-from src.model.IndividualClass import Individual
-from src.model.classic.classical_genetic_algorithm_parameters import CGAParameters
-from src.model.classic.classical_genetic_algorithm_settings import CGASettings
+from typing import List, Tuple, Union
+from src.classical_genetic_algorithm.model.cga_individual import Individual
+from src.classical_genetic_algorithm.options_ga.cga_parameters import CGAParameters
+from src.classical_genetic_algorithm.options_ga.cga_settings import CGASettings
 
 
 class FileManager(ABC):
@@ -28,7 +28,7 @@ class FileManager(ABC):
             print(f'Ошибка: {e}')
 
     @staticmethod
-    def open_file(filepath: str) -> Tuple[dict, dict]:
+    def open_file(filepath: str) -> Union[None, Tuple[dict, dict]]:
         """
         Открывать файлы с исходными настройками генетического алгоритма
         :param filepath: путь к файлу с исходными данными генетического алгоритма

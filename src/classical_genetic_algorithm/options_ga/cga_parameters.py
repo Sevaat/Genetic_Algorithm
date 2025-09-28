@@ -1,17 +1,17 @@
-from src.utils.data_verification import DataVerification
+from src.classical_genetic_algorithm.utils.cga_data_verification import DataVerification
 from typing import List
 
 class CGAParameters:
     def __init__(self):
-        self._number_of_individuals = None  # количество особей в популяции
-        self._proportion_of_elite_individuals = None  # доля элитных особей
-        self._number_of_eras = None  # количество эпох
-        self._gene_sets = None  # данные хромосом
-        self._mutation_probability = None  # вероятность мутации
-        self._change_counter = None # счётчик изменений лучшей особи
-        self._number_of_results = None # количество выводимых результатов
-        self._recombination_point_count = None # количество точек рекомбинации
-        self._number_of_recurring_individuals = None # количество повторяющихся особей
+        self._number_of_individuals = None                  # количество особей в популяции
+        self._proportion_of_elite_individuals = None        # доля элитных особей
+        self._number_of_eras = None                         # количество эпох
+        self._gene_sets = None                              # данные хромосом
+        self._mutation_probability = None                   # вероятность мутации
+        self._change_counter = None                         # счётчик изменений лучшей особи
+        self._number_of_results = None                      # количество выводимых результатов
+        self._recombination_point_count = None              # количество точек рекомбинации
+        self._number_of_recurring_individuals = None        # количество повторяющихся особей (0 - сколько угодно)
 
     @property
     def number_of_individuals(self):
@@ -98,7 +98,12 @@ class CGAParameters:
                 gene_sets.append(v.split())
         self._gene_sets = gene_sets
 
-def get_parameters(parameters: dict):
+def get_parameters(parameters: dict) -> CGAParameters:
+    """
+    Сборка экземпляра класса параметров
+    :param parameters: входной список параметров
+    :return: параметры ГА
+    """
     ga_parameters = CGAParameters()
     ga_parameters.number_of_individuals = parameters['number_of_individuals']
     ga_parameters.proportion_of_elite_individuals = parameters['proportion_of_elite_individuals']
