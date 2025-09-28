@@ -6,7 +6,7 @@ from src.classical_genetic_algorithm.model.cga_recombination import Recombinatio
 from src.variation_modules.ReplacementClass import Replacement
 from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
 from src.variation_modules.StopsClass import Stops
-from src.calculations.MutationClass import Mutation
+from src.classical_genetic_algorithm.model.cga_mutation import Mutation
 
 class CGASettings:
     """

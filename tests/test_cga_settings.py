@@ -2,7 +2,7 @@ import pytest
 
 
 def test_classical_genetic_algorithm_settings_valid():
-    from src.calculations.MutationClass import Mutation
+    from src.classical_genetic_algorithm.model.cga_mutation import Mutation
     from src.classical_genetic_algorithm.model.cga_population_initialization import Population
     from src.variation_modules.PurposeClass import Purpose
     from src.classical_genetic_algorithm.model.cga_recombination import Recombination
