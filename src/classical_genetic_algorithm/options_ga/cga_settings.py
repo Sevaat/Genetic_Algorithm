@@ -1,12 +1,13 @@
 from typing import Callable
 
 from src.classical_genetic_algorithm.model.cga_population_initialization import Population
-from src.variation_modules.PurposeClass import Purpose
+from src.classical_genetic_algorithm.utils.cga_purpose import Purpose
 from src.classical_genetic_algorithm.model.cga_recombination import Recombination
 from src.classical_genetic_algorithm.model.cga_replacement import Replacement
 from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
 from src.variation_modules.StopsClass import Stops
 from src.classical_genetic_algorithm.model.cga_mutation import Mutation
+from src.classical_genetic_algorithm.model.cga_target_function import TargetFunction
 
 class CGASettings:
     """
@@ -191,7 +192,16 @@ class CGASettingsRecombinationBuilder(CGASettingsPurposeBuilder):
             self.settings.recombination = None
         return self
 
-class CGASettingsPopulationInitializationBuilder(CGASettingsRecombinationBuilder):
+class CGASettingsTargetFunctionBuilder(CGASettingsRecombinationBuilder):
+    """
+    Расчет целевой функции
+    """
+    def target_function(self, user_function):
+        TargetFunction._function = user_function
+        self.settings.target_function = TargetFunction.get_result_user_defined_function
+        return self
+
+class CGASettingsPopulationInitializationBuilder(CGASettingsTargetFunctionBuilder):
     """
     Инициализация начальной популяции
     """
@@ -233,9 +243,9 @@ def get_settings(settings: dict, function: Callable):
         stops(settings['stops']). \
         purpose(settings['purpose']). \
         recombination(settings['recombination']). \
+        target_function(function). \
         population_initialization(settings['population_initialization']). \
         mutation(settings['mutation']). \
         replacement(settings['replacement']). \
         build()
-    ga_settings.target_function = function
     return ga_settings
