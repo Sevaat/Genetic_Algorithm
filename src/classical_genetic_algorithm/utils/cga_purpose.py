@@ -22,7 +22,3 @@ class Purpose(ABC):
         """
         individuals = sorted(individuals, key=lambda ind: ind.rank, reverse=True)
         return individuals
-
-
-if __name__ == '__main__':
-    pass
