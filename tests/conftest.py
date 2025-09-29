@@ -97,9 +97,24 @@ def cga_children(cga_config):
         Individual().new_individual_by_code('110100'),
         Individual().new_individual_by_code('001111'),
         Individual().new_individual_by_code('110000'),
+        Individual().new_individual_by_code('000000'),
+        Individual().new_individual_by_code('111100')
+    ]
+    return children
+
+@pytest.fixture
+def cga_mutants(cga_config):
+    from src.classical_genetic_algorithm.model.cga_individual import Individual
+    mutants = [
+        Individual().new_individual_by_code('000001'),
+        Individual().new_individual_by_code('010100'),
+        Individual().new_individual_by_code('001101'),
+        Individual().new_individual_by_code('110100'),
+        Individual().new_individual_by_code('001111'),
+        Individual().new_individual_by_code('110000'),
         Individual().new_individual_by_code('001111'),
         Individual().new_individual_by_code('000000'),
         Individual().new_individual_by_code('000001'),
         Individual().new_individual_by_code('111100'),
     ]
-    return children
+    return mutants

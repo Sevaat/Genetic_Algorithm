@@ -21,7 +21,7 @@ class Recombination(ABC):
             for i in range(len(points)-1):
                 children_1 += par_par[i % 2].code[points[i]:points[i + 1]]
                 children_2 += par_par[(i + 1) % 2].code[points[i]:points[i + 1]]
-            children = Recombination.child_addition(population, children_1, children_2, children)
+            children += Recombination.child_addition(population + children, children_1, children_2)
         return children
 
     @staticmethod
@@ -47,7 +47,7 @@ class Recombination(ABC):
                     children_2 += par_par[0].code[points[i]:points[i + 1]]
                 if random.randint(0, 100) < 20:
                     s = not s
-            children = Recombination.child_addition(population, children_1, children_2, children)
+            children += Recombination.child_addition(population + children, children_1, children_2)
         return children
 
     @staticmethod
@@ -68,7 +68,7 @@ class Recombination(ABC):
                 children_1 += p[0].code[points[i]:points[i + 1]]
                 p = random.choices(list(par_par), weights=[50, 50], k=1)
                 children_2 += p[0].code[points[i]:points[i + 1]]
-            children = Recombination.child_addition(population, children_1, children_2, children)
+            children += Recombination.child_addition(population + children, children_1, children_2)
         return children
 
     @staticmethod
@@ -87,23 +87,23 @@ class Recombination(ABC):
         return points
 
     @staticmethod
-    def child_addition(population: list[Individual], children_1: str, children_2: str, children: list[Individual]) -> list[Individual]:
+    def child_addition(population: list[Individual], children_1: str, children_2: str) -> list[Individual]:
         """
         Проверка на дубликаты и добавление новых особей в список детей
         :param population: список особей популяции
         :param children_1: ребенок 1
         :param children_2: ребенок 2
-        :param children: список детей
         :return: список детей с возможными добавлениями
         """
+        added_children = []
         children_1 = Individual.new_individual_by_code(children_1)
         if children_1 is not None:
             if DuplicateCheck.individual_addition(population, children_1):
-                children.append(children_1)
+                added_children.append(children_1)
 
         children_2 = Individual.new_individual_by_code(children_2)
         if children_2 is not None:
             if DuplicateCheck.individual_addition(population, children_2):
-                children.append(children_2)
+                added_children.append(children_2)
 
-        return children
+        return added_children
