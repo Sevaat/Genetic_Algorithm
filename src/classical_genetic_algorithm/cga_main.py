@@ -16,13 +16,9 @@ def start():
         del children
         mutants = config.settings.target_function(mutants)
         population = config.settings.replacement(population, mutants)
-
-
-
-
-    #     del mutants
-    #     if GV.GENETIC_ALGORITHM.stops(population):
-    #         break
-    #     else:
-    #         era += 1
-    # return population[:GV.PARAMETERS.number_of_results]
+        del mutants
+        if config.settings.stops(population):
+            break
+        else:
+            era += 1
+        return population[:config.parameters.number_of_results]

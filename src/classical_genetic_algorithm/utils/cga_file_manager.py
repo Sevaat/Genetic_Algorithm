@@ -20,7 +20,7 @@ class FileManager(ABC):
             date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             filepath = Path(__file__).resolve().parent.parent / "Data"
             os.makedirs(filepath, exist_ok=True)
-            filepath = f"{filepath}/results_{date}.txt"
+            filepath = f"{filepath}/results_cga_{date}.txt"
             with open(filepath, "w", encoding="utf-8") as file:
                 for res in result:
                     file.write(f'{res}\n')
@@ -37,7 +37,7 @@ class FileManager(ABC):
         if filepath == '':
             filepath = Path(__file__).resolve().parent.parent / "Data"
             os.makedirs(filepath, exist_ok=True)
-            filepath = f"{filepath}/input_data.txt"
+            filepath = f"{filepath}/input_cga_data.txt"
         try:
             settings = {}
             parameters = {}

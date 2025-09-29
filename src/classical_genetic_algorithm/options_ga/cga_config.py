@@ -1,5 +1,6 @@
-from typing import Callable
+from typing import Callable, Union
 
+from src.classical_genetic_algorithm.model.cga_individual import Individual
 from src.classical_genetic_algorithm.options_ga.cga_parameters import get_parameters
 from src.classical_genetic_algorithm.options_ga.cga_settings import get_settings
 
@@ -18,6 +19,8 @@ class Config:
     def __init__(self, settings: dict, parameters: dict, function: Callable):
         self.__settings = get_settings(settings, function)
         self.__parameters = get_parameters(parameters)
+        self.__counter = self.__parameters.change_counter
+        self.__best_individual = None
 
     @property
     def settings(self):
@@ -26,3 +29,21 @@ class Config:
     @property
     def parameters(self):
         return self.__parameters
+
+    @property
+    def counter(self):
+        return self.__counter
+
+    @counter.setter
+    def counter(self, new_counter):
+        if isinstance(new_counter, int):
+            self.__counter = new_counter
+
+    @property
+    def best_individual(self):
+        return self.__best_individual
+
+    @best_individual.setter
+    def best_individual(self, new_best_individual):
+        if isinstance(new_best_individual, Individual):
+            self.__best_individual = new_best_individual

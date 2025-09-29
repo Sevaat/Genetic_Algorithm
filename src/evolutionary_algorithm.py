@@ -18,6 +18,4 @@ class EvolutionaryAlgorithm(ABC):
         Config(setting, parameters, user_function)
         del setting, parameters
         result = start()
-
-
-        # FileManager.save_file(result)
+        FileManager.save_file(result)

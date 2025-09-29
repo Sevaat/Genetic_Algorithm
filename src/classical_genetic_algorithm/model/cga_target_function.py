@@ -13,8 +13,6 @@ class TargetFunction(ABC):
         :param individuals: список особей
         :return: список особей без некорректных (значение хромосомы выходит за допустимые границы)
         """
-        from src.classical_genetic_algorithm.options_ga.cga_config import Config
-        config = Config()
         new_individuals = []
         for ind in individuals:
             if ind.overstepping():

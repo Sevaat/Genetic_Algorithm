@@ -43,7 +43,7 @@ def test_classical_genetic_algorithm_parameters_valid(cga_parameters):
     assert params.change_counter == 5
     assert params.number_of_results == 3
     assert params.recombination_point_count == 1
-    assert params.number_of_recurring_individuals == 0
+    assert params.number_of_recurring_individuals == 1
     assert params.gene_sets == [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
 
 def test_classical_genetic_algorithm_parameters_invalid_value():
