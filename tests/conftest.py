@@ -112,9 +112,7 @@ def cga_mutants(cga_config):
         Individual().new_individual_by_code('110100'),
         Individual().new_individual_by_code('001111'),
         Individual().new_individual_by_code('110000'),
-        Individual().new_individual_by_code('001111'),
-        Individual().new_individual_by_code('000000'),
-        Individual().new_individual_by_code('000001'),
         Individual().new_individual_by_code('111100'),
     ]
+    mutants = cga_config.settings.target_function(mutants)
     return mutants

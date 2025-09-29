@@ -1,6 +1,5 @@
 from abc import ABC
 from src.classical_genetic_algorithm.model.cga_individual import Individual
-import src.utils.GlobalVariables as GV
 
 
 class Replacement(ABC):
@@ -12,13 +11,15 @@ class Replacement(ABC):
         :param individuals_2: список новых особей-мутантов
         :return: список элитных особей и лучших особей-мутантов в количестве не превышающем максимального значения популяции
         """
-        n_elite = int(GV.PARAMETERS.proportion_of_elite_individuals * GV.PARAMETERS.number_of_individuals)
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        config = Config()
+        n_elite = int(config.parameters.proportion_of_elite_individuals * config.parameters.number_of_individuals)
         if len(individuals_1)-n_elite > len(individuals_2):
             n_elite = len(individuals_1)-n_elite
         new_individuals = individuals_1[:n_elite]
         new_individuals += individuals_2
-        new_individuals = GV.GENETIC_ALGORITHM.purpose(new_individuals)
-        new_individuals = new_individuals[:GV.PARAMETERS.number_of_individuals]
+        new_individuals = config.settings.purpose(new_individuals)
+        new_individuals = new_individuals[:config.parameters.number_of_individuals]
         return new_individuals
 
     @staticmethod
@@ -29,7 +30,9 @@ class Replacement(ABC):
         :param individuals_2: список новых особей-мутантов
         :return: список лучших особей и особей-мутантов в количестве не превышающем максимального значения популяции
         """
+        from src.classical_genetic_algorithm.options_ga.cga_config import Config
+        config = Config()
         new_individuals = individuals_1 + individuals_2
-        new_individuals = GV.GENETIC_ALGORITHM.purpose(new_individuals)
-        new_individuals = new_individuals[:GV.PARAMETERS.number_of_individuals]
+        new_individuals = config.settings.purpose(new_individuals)
+        new_individuals = new_individuals[:config.parameters.number_of_individuals]
         return new_individuals

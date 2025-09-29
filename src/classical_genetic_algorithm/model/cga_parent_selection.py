@@ -2,7 +2,7 @@ from abc import ABC
 import random
 
 from src.classical_genetic_algorithm.model.cga_individual import Individual
-from src.variation_modules.PurposeClass import Purpose
+from src.classical_genetic_algorithm.utils.cga_purpose import Purpose
 
 
 class Selection(ABC):
