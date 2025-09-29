@@ -29,6 +29,6 @@ class Mutation(ABC):
             # проверка на корректные значения и дублирование после мутации
             new_individual = Individual.new_individual_by_code(new_code)
             if new_individual is not None:
-                if DuplicateCheck.individual_addition(population, new_individual):
+                if DuplicateCheck.individual_addition(population + mutants, new_individual):
                     mutants.append(new_individual)
         return mutants

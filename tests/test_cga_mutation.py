@@ -6,4 +6,4 @@ def test_mutation(cga_population_with_tf, cga_children):
     random.seed(1)
     mutants = Mutation.mutation(cga_population_with_tf, cga_children)
     assert mutants[0] == Individual().new_individual_by_code('000001')
-    assert len(mutants) == 10
+    assert len(mutants) == 7
