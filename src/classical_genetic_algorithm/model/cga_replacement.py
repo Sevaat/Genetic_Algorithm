@@ -33,7 +33,3 @@ class Replacement(ABC):
         new_individuals = GV.GENETIC_ALGORITHM.purpose(new_individuals)
         new_individuals = new_individuals[:GV.PARAMETERS.number_of_individuals]
         return new_individuals
-    
-    
-if __name__ == '__main__':
-    pass

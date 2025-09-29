@@ -11,18 +11,15 @@ def start():
     while era < config.parameters.number_of_eras:
         parents = config.settings.parent_selection(population)
         children = config.settings.recombination(population, parents)
+        del parents
+        mutants = config.settings.mutation(population, children)
+        del children
+        mutants = config.settings.target_function(mutants)
+        population = config.settings.replacement(population, mutants)
 
 
 
-    #
-    #
-    #
-    #
-    #     del parents
-    #     mutants = GV.GENETIC_ALGORITHM.mutation(population, childrens)
-    #     del childrens
-    #     mutants = GV.GENETIC_ALGORITHM.target_function(mutants)
-    #     population = GV.GENETIC_ALGORITHM.replacement(population, mutants)
+
     #     del mutants
     #     if GV.GENETIC_ALGORITHM.stops(population):
     #         break

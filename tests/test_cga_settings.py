@@ -6,7 +6,7 @@ def test_classical_genetic_algorithm_settings_valid():
     from src.classical_genetic_algorithm.model.cga_population_initialization import Population
     from src.variation_modules.PurposeClass import Purpose
     from src.classical_genetic_algorithm.model.cga_recombination import Recombination
-    from src.variation_modules.ReplacementClass import Replacement
+    from src.classical_genetic_algorithm.model.cga_replacement import Replacement
     from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
     from src.variation_modules.StopsClass import Stops
     from src.classical_genetic_algorithm.options_ga.cga_settings import get_settings
