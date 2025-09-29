@@ -116,3 +116,35 @@ def cga_mutants(cga_config):
     ]
     mutants = cga_config.settings.target_function(mutants)
     return mutants
+
+@pytest.fixture
+def cga_replacement_elite(cga_population_with_tf, cga_mutants):
+    replacement = [
+        cga_population_with_tf[3],
+        cga_mutants[0],
+        cga_population_with_tf[0],
+        cga_population_with_tf[1],
+        cga_mutants[1],
+        cga_mutants[5],
+        cga_population_with_tf[4],
+        cga_mutants[2],
+        cga_mutants[3],
+        cga_population_with_tf[2]
+    ]
+    return replacement
+
+@pytest.fixture
+def cga_replacement_simple_cut(cga_population_with_tf, cga_mutants):
+    replacement = [
+        cga_population_with_tf[3],
+        cga_population_with_tf[7],
+        cga_mutants[0],
+        cga_population_with_tf[0],
+        cga_population_with_tf[1],
+        cga_population_with_tf[8],
+        cga_mutants[1],
+        cga_mutants[5],
+        cga_population_with_tf[4],
+        cga_population_with_tf[9]
+    ]
+    return replacement
