@@ -1,8 +1,8 @@
 from typing import Callable, Union
 
 from src.classical_genetic_algorithm.model.cga_individual import Individual
-from src.classical_genetic_algorithm.options_ga.cga_parameters import get_parameters
-from src.classical_genetic_algorithm.options_ga.cga_settings import get_settings
+from src.classical_genetic_algorithm.options_ga.parameters import get_parameters
+from src.classical_genetic_algorithm.options_ga.operators import get_operators
 
 
 def singleton(class_):
@@ -17,7 +17,7 @@ def singleton(class_):
 @singleton
 class Config:
     def __init__(self, settings: dict, parameters: dict, function: Callable):
-        self.__settings = get_settings(settings, function)
+        self.__settings = get_operators(settings, function)
         self.__parameters = get_parameters(parameters)
         self.__counter = self.__parameters.change_counter
         self.__best_individual = None

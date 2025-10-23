@@ -1,7 +1,7 @@
 from src.classical_genetic_algorithm.utils.cga_data_verification import DataVerification
 from typing import List
 
-class CGAParameters:
+class Parameters:
     def __init__(self):
         self._number_of_individuals = None                  # количество особей в популяции
         self._proportion_of_elite_individuals = None        # доля элитных особей
@@ -82,36 +82,35 @@ class CGAParameters:
         return self._gene_sets
 
     @gene_sets.setter
-    def gene_sets(self, value: List[str]):
+    def gene_sets(self, data_gene_sets: dict[str, list[str]]):
         gene_sets = []
-        for v in value:
+        for gs in data_gene_sets["simple set"]:
+            gene_sets.append(gs.split())
+        for gs in data_gene_sets["step set"]:
             gene_set = []
-            if v[0] == 'd':
-                start, end, step = v[2:].strip().split()
-                if DataVerification.is_float(start) and DataVerification.is_float(end) and DataVerification.is_float(step):
-                    start, end, step = float(start), float(end), float(step)
-                while start <= end:
-                    gene_set.append(str(start))
-                    start += step
-                gene_sets.append(gene_set)
-            else:
-                gene_sets.append(v.split())
+            start, end, step = gs[2:].strip().split()
+            if DataVerification.is_float(start) and DataVerification.is_float(end) and DataVerification.is_float(step):
+                start, end, step = float(start), float(end), float(step)
+            while start <= end:
+                gene_set.append(str(start))
+                start += step
+            gene_sets.append(gene_set)
         self._gene_sets = gene_sets
 
-def get_parameters(parameters: dict) -> CGAParameters:
+def get_parameters(data_parameters: dict) -> Parameters:
     """
     Сборка экземпляра класса параметров
-    :param parameters: входной список параметров
+    :param data_parameters: входной список параметров
     :return: параметры ГА
     """
-    ga_parameters = CGAParameters()
-    ga_parameters.number_of_individuals = parameters['number_of_individuals']
-    ga_parameters.proportion_of_elite_individuals = parameters['proportion_of_elite_individuals']
-    ga_parameters.number_of_eras = parameters['number_of_eras']
-    ga_parameters.gene_sets = parameters['gene_sets']
-    ga_parameters.mutation_probability = parameters['mutation_probability']
-    ga_parameters.change_counter = parameters['change_counter']
-    ga_parameters.number_of_results = parameters['number_of_results']
-    ga_parameters.recombination_point_count = parameters['recombination_point_count']
-    ga_parameters.number_of_recurring_individuals = parameters['number_of_recurring_individuals']
-    return ga_parameters
+    parameters = Parameters()
+    parameters.number_of_individuals = data_parameters['number of individuals']
+    parameters.proportion_of_elite_individuals = data_parameters['proportion of elite individuals']
+    parameters.number_of_eras = data_parameters['number of eras']
+    parameters.gene_sets = data_parameters['gene sets']
+    parameters.mutation_probability = data_parameters['mutation probability']
+    parameters.change_counter = data_parameters['change counter']
+    parameters.number_of_results = data_parameters['number of results']
+    parameters.recombination_point_count = data_parameters['recombination point count']
+    parameters.number_of_recurring_individuals = data_parameters['number of recurring individuals']
+    return parameters

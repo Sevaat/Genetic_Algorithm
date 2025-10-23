@@ -1,0 +1,31 @@
+{
+  "operators":
+  {
+    "parent selection": "standard",
+    "stops": "epochs",
+    "purpose": "minimum",
+    "recombination": "point",
+    "population initialization": "random",
+    "mutation": "simple mutation",
+    "replacement": "elite"
+  },
+  "parameters":
+  {
+    "number of individuals": 100,
+    "proportion of elite individuals": 0.2,
+    "number of eras": 10,
+    "mutation probability": 0.02,
+    "change counter": 10,
+    "number of results": 5,
+    "recombination point count": 1,
+    "number_of_recurring_individuals": 0,
+    "gene sets": {
+      "simple set": [
+        "0 1 2 3 4"
+      ],
+      "step set": [
+        "5 9 1"
+      ]
+    }
+  }
+}

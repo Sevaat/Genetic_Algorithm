@@ -9,7 +9,7 @@ from src.classical_genetic_algorithm.model.cga_stops import Stops
 from src.classical_genetic_algorithm.model.cga_mutation import Mutation
 from src.classical_genetic_algorithm.model.cga_target_function import TargetFunction
 
-class CGASettings:
+class Operators:
     """
     Настройки классического генетического алгоритма
     """
@@ -128,71 +128,71 @@ class CGASettings:
             raise TypeError('Аргумент должен быть функцией.')
 
 # строитель через наследование
-class CGASettingsBuilder:
+class OperatorsBuilder:
     """
     Родительский класс строителя
     """
     def __init__(self):
-        self.settings = CGASettings()
+        self.settings = Operators()
 
     def build(self):
         return self.settings
 
-class CGASettingsParentSelectionBuilder(CGASettingsBuilder):
+class OperatorsParentSelectionBuilder(OperatorsBuilder):
     """
     Выбор родителей
     """
     def parent_selection(self, selection):
-        if selection == 'СТАНДАРНЫЙ':
+        if selection == 'standard':
             self.settings.parent_selection = Selection.standard_selection
-        elif selection == 'СТОХАСТИЧЕСКАЯ УНИВЕРСАЛЬНАЯ ВЫБОРКА':
+        elif selection == 'stochastic universal sampling':
             self.settings.parent_selection = Selection.stochastic_universal_sampling
         else:
             self.settings.parent_selection = None
         return self
 
-class CGASettingsStopsBuilder(CGASettingsParentSelectionBuilder):
+class OperatorsStopsBuilder(OperatorsParentSelectionBuilder):
     """
     Условия останова
     """
     def stops(self, stops):
-        if stops == 'КОЛИЧЕСТВО ЭПОХ':
+        if stops == 'epochs':
             self.settings.stops = Stops.stopping_by_the_number_of_eras
-        elif stops == 'НЕИЗМЕНЯЕМОСТЬ':
+        elif stops == 'immutability':
             self.settings.stops = Stops.stopping_for_the_best
         else:
             self.settings.stops = None
         return self
 
-class CGASettingsPurposeBuilder(CGASettingsStopsBuilder):
+class OperatorsPurposeBuilder(OperatorsStopsBuilder):
     """
     Направление оптимизации
     """
     def purpose(self, purpose):
-        if purpose == 'МИНИМУМ':
+        if purpose == 'minimum':
             self.settings.purpose = Purpose.sort_by_more
-        elif purpose == 'МАКСИМУМ':
+        elif purpose == 'maximum':
             self.settings.purpose = Purpose.sort_by_less
         else:
             self.settings.purpose = None
         return self
 
-class CGASettingsRecombinationBuilder(CGASettingsPurposeBuilder):
+class OperatorsRecombinationBuilder(OperatorsPurposeBuilder):
     """
     Вид рекомбинации параметров особи
     """
     def recombination(self, recombination):
-        if recombination == 'ТОЧЕЧНАЯ':
+        if recombination == 'point':
             self.settings.recombination = Recombination.point_crossing
-        elif recombination == 'СЕГМЕНТИРОВАННАЯ':
+        elif recombination == 'segmented':
             self.settings.recombination = Recombination.segmental_crossing
-        elif recombination == 'РАВНОМЕРНАЯ':
+        elif recombination == 'uniform':
             self.settings.recombination = Recombination.even_crossing
         else:
             self.settings.recombination = None
         return self
 
-class CGASettingsTargetFunctionBuilder(CGASettingsRecombinationBuilder):
+class OperatorsTargetFunctionBuilder(OperatorsRecombinationBuilder):
     """
     Расчет целевой функции
     """
@@ -203,51 +203,57 @@ class CGASettingsTargetFunctionBuilder(CGASettingsRecombinationBuilder):
         self.settings.target_function = TargetFunction.get_result_user_defined_function
         return self
 
-class CGASettingsPopulationInitializationBuilder(CGASettingsTargetFunctionBuilder):
+class OperatorsPopulationInitializationBuilder(OperatorsTargetFunctionBuilder):
     """
     Инициализация начальной популяции
     """
     def population_initialization(self, initialization):
-        if initialization == 'СЛУЧАЙНАЯ ГЕНЕРАЦИЯ':
+        if initialization == 'random':
             self.settings.population_initialization = Population.get_new_random_population
         else:
             self.settings.population_initialization = None
         return self
 
-class CGASettingsMutationInitializationBuilder(CGASettingsPopulationInitializationBuilder):
+class OperatorsMutationInitializationBuilder(OperatorsPopulationInitializationBuilder):
     """
     Тип мутации особи
     """
     def mutation(self, mutation):
-        if mutation == 'ПРОСТАЯ МУТАЦИЯ':
+        if mutation == 'simple mutation':
             self.settings.mutation = Mutation.mutation
         else:
             self.settings.mutation = None
         return self
 
-class CGASettingsReplacementBuilder(CGASettingsMutationInitializationBuilder):
+class OperatorsReplacementBuilder(OperatorsMutationInitializationBuilder):
     """
     Тип отбора лучших особей
     """
     def replacement(self, replacement):
-        if replacement == 'ЭЛИТА':
+        if replacement == 'elite':
             self.settings.replacement = Replacement.elite
-        elif replacement == 'ПРОСТОЙ СРЕЗ':
+        elif replacement == 'easy cut':
             self.settings.replacement = Replacement.simple_cut
         else:
             self.settings.replacement = None
         return self
 
-def get_settings(settings: dict, function: Callable):
-    settings_builder = CGASettingsReplacementBuilder()
-    ga_settings = settings_builder. \
-        parent_selection(settings['parent_selection']). \
-        stops(settings['stops']). \
-        purpose(settings['purpose']). \
-        recombination(settings['recombination']). \
-        target_function(function). \
-        population_initialization(settings['population_initialization']). \
-        mutation(settings['mutation']). \
-        replacement(settings['replacement']). \
+def get_operators(data_operators: dict, users_function: Callable):
+    """
+    Получить набор актуальных операторов для ГА
+    :param data_operators: список данных операторов пользователя
+    :param users_function: пользовательская целевая функция
+    :return: набор актуальных операторов ГА (используемых в рамках данной задача)
+    """
+    operators_builder = OperatorsReplacementBuilder()
+    operators = operators_builder. \
+        parent_selection(data_operators["parent selection"]). \
+        stops(data_operators["stops"]). \
+        purpose(data_operators["purpose"]). \
+        recombination(data_operators["recombination"]). \
+        target_function(users_function). \
+        population_initialization(data_operators["population initialization"]). \
+        mutation(data_operators["simple mutation"]). \
+        replacement(data_operators["elite"]). \
         build()
-    return ga_settings
+    return operators
