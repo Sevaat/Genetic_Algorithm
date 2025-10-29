@@ -8,23 +8,24 @@ from src.classical_genetic_algorithm.options.parameters import Parameters
 
 class CGA:
     def __init__(self, users_function: Callable):
-        self.__operators, self.__parameters = CGA.__get_operators_and_parameters(users_function)
-        self.__best_individuals = None
+        self._operators, self._parameters = CGA._get_operators_and_parameters(users_function)
+        self._best_individual = None
+        self._counter = None
 
-    @property
-    def parameters(self):
-        return self.__parameters
-
-    @property
-    def operators(self):
-        return self.__operators
-
-    @property
-    def best_individuals(self):
-        return self.__best_individuals
+    # @property
+    # def parameters(self):
+    #     return self._parameters
+    #
+    # @property
+    # def operators(self):
+    #     return self._operators
+    #
+    # @property
+    # def best_individual(self):
+    #     return self._best_individual
 
     @staticmethod
-    def __load_data():
+    def _load_data():
         """
         Читать JSON файл
         :return:
@@ -46,13 +47,13 @@ class CGA:
         return data
 
     @staticmethod
-    def __get_operators_and_parameters(users_function: Callable):
+    def _get_operators_and_parameters(users_function: Callable):
         """
         Получать операторы и параметры ГА
         :param users_function: пользовательская функция
         :return: операторы, параметры ГА
         """
-        data = CGA.__load_data()
+        data = CGA._load_data()
         operators = Operators(data["operators"], users_function)
         parameters = Parameters(data["parameters"])
         return operators, parameters
@@ -62,23 +63,28 @@ class CGA:
         Оптимизировать задачи с использованием классического генетического алгоритма
         :return:
         """
-        population = self.operators.population_initialization(self.parameters)
-        population = self.operators.target_function(population, self.parameters)
-
-
+        population = self._operators.population_initialization(self._parameters)
+        population = self._operators.target_function(population, self._parameters)
         era = 0
-        while era < self.parameters.number_of_eras:
-            parents = self.operators.parent_selection(population)
-            children = self.operators.recombination(population, parents)
+        while True:
+            parents = self._operators.parent_selection(population, self._parameters)
+            children = self._operators.recombination(population, parents, self._parameters)
             del parents
-            mutants = self.operators.mutation(population, children)
+            mutants = self._operators.mutation(population, children, self._parameters)
             del children
-            mutants = self.operators.target_function(mutants)
-            population = self.operators.replacement(population, mutants)
+            mutants = self._operators.target_function(mutants, self._parameters)
+            population = self._operators.replacement(population, mutants, self._parameters, self._operators)
             del mutants
-            if self.operators.stops(population):
+            stops_dict = {
+                'individuals': population,
+                'best_individual': self._best_individual,
+                'counter': self._counter,
+                'parameters': self._parameters,
+                'era': era
+            }
+            if self._operators.stops(stops_dict):
                 break
             else:
                 era += 1
-            return population[:self.parameters.number_of_results]
+        return population[:self._parameters.number_of_results]
 

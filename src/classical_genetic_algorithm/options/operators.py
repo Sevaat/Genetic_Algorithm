@@ -1,12 +1,12 @@
 from typing import Callable, Any, Dict
 
 from src.classical_genetic_algorithm.model.population_initialization import Population
-from src.classical_genetic_algorithm.utils.cga_purpose import Purpose
-from src.classical_genetic_algorithm.model.cga_recombination import Recombination
-from src.classical_genetic_algorithm.model.cga_replacement import Replacement
-from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
-from src.classical_genetic_algorithm.model.cga_stops import Stops
-from src.classical_genetic_algorithm.model.cga_mutation import Mutation
+from src.classical_genetic_algorithm.utils.purpose import Purpose
+from src.classical_genetic_algorithm.model.recombination import Recombination
+from src.classical_genetic_algorithm.model.replacement import Replacement
+from src.classical_genetic_algorithm.model.parent_selection import Selection
+from src.classical_genetic_algorithm.model.stops import Stops
+from src.classical_genetic_algorithm.model.mutation import Mutation
 from src.classical_genetic_algorithm.model.target_function import TargetFunction
 from pydantic import BaseModel, ValidationError
 
@@ -127,7 +127,11 @@ class Operators(BaseModel):
         :return: функция выбранного оператора
         """
         m_dict = {
-            'simple_mutation': Mutation.mutation
+            'inversion_one_bit': Mutation.inversion_one_bit,
+            'inversion_group_bits': Mutation.inversion_group_bits,
+            'swap': Mutation.swap,
+            'reverse': Mutation.reverse,
+            'shuffle': Mutation.shuffle
         }
         if value in m_dict.keys():
             return m_dict[value]

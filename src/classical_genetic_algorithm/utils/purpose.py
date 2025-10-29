@@ -1,10 +1,12 @@
 from abc import ABC
-from src.classical_genetic_algorithm.model.cga_individual import Individual
+from typing import List
+
+from src.classical_genetic_algorithm.model.individual import Individual
 
 
 class Purpose(ABC):
     @staticmethod
-    def sort_by_more(individuals: [Individual]) -> [Individual]:
+    def sort_by_more(individuals: List[Individual]) -> List[Individual]:
         """
         Сортировка особей по значению ЦФ: от меньшего к большему
         :param individuals: список особей
@@ -14,7 +16,7 @@ class Purpose(ABC):
         return individuals
 
     @staticmethod
-    def sort_by_less(individuals: [Individual]) -> [Individual]:
+    def sort_by_less(individuals: List[Individual]) -> List[Individual]:
         """
         Сортировка особей по значению ЦФ: от большего к меньшему
         :param individuals: список особей

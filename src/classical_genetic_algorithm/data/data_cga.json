@@ -6,7 +6,7 @@
     "purpose": "minimum",
     "recombination": "point",
     "population_initialization": "random",
-    "mutation": "simple_mutation",
+    "mutation": "inversion_one_bit",
     "replacement": "elite"
   },
   "parameters":

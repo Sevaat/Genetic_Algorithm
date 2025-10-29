@@ -9,7 +9,7 @@ def fixture_parameters():
     parameters = {
         "number_of_individuals": 100,
         "proportion_of_elite_individuals": 0.2,
-        "number_of_eras": 10,
+        "number_of_eras": 100,
         "mutation_probability": 0.02,
         "change_counter": 10,
         "number_of_results": 5,
@@ -35,7 +35,7 @@ def fixture_operators():
         "purpose": "minimum",
         "recombination": "point",
         "population_initialization": "random",
-        "mutation": "simple_mutation",
+        "mutation": "inversion_one_bit",
         "replacement": "elite"
     }
     return operators
