@@ -1,7 +1,10 @@
 import json
 import os
+from datetime import datetime
 from pathlib import Path
-from typing import Callable
+from typing import Callable, List, Dict, Any, Tuple
+
+from src.classical_genetic_algorithm.model.individual import Individual
 from src.classical_genetic_algorithm.options.operators import Operators
 from src.classical_genetic_algorithm.options.parameters import Parameters
 
@@ -12,20 +15,8 @@ class CGA:
         self._best_individual = None
         self._counter = None
 
-    # @property
-    # def parameters(self):
-    #     return self._parameters
-    #
-    # @property
-    # def operators(self):
-    #     return self._operators
-    #
-    # @property
-    # def best_individual(self):
-    #     return self._best_individual
-
     @staticmethod
-    def _load_data():
+    def _load_data() -> Dict[str, Any]:
         """
         Читать JSON файл
         :return:
@@ -47,7 +38,23 @@ class CGA:
         return data
 
     @staticmethod
-    def _get_operators_and_parameters(users_function: Callable):
+    def _save_data(population: List[Individual]) -> None:
+        """
+        Запись в JSON файл
+        :return:
+        """
+        filepath = Path(__file__).resolve().parent.parent / "result"
+        os.makedirs(filepath, exist_ok=True)
+        filepath = f"{filepath}/result_cga_{datetime.now().strftime("%d.%m.%Y_%H-%M-%S")}.json"
+        try:
+            with open(filepath, "w", encoding="utf-8") as file:
+                json.dump(population, file)
+            print("Запись результатов прошла успешно")
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
+
+    @staticmethod
+    def _get_operators_and_parameters(users_function: Callable) -> Tuple[Operators, Parameters]:
         """
         Получать операторы и параметры ГА
         :param users_function: пользовательская функция
@@ -58,7 +65,7 @@ class CGA:
         parameters = Parameters(data["parameters"])
         return operators, parameters
 
-    def run(self):
+    def run(self) -> None:
         """
         Оптимизировать задачи с использованием классического генетического алгоритма
         :return:
@@ -86,5 +93,4 @@ class CGA:
                 break
             else:
                 era += 1
-        return population[:self._parameters.number_of_results]
-
+        self._save_data(population[:self._parameters.number_of_results])

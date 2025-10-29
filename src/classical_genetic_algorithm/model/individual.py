@@ -1,5 +1,5 @@
 import random
-from typing import Union, Self, List
+from typing import Union, Self, List, Dict, Any
 
 from src.classical_genetic_algorithm.options.parameters import Parameters
 from src.classical_genetic_algorithm.utils.gray_code_converter import GrayCodeConverter
@@ -15,6 +15,14 @@ class Individual:
 
     def __ne__(self, other):
         return self.code != other.code
+
+    def to_dict(self, parameters: Parameters) -> Dict[str, Any]:
+        """
+        Вывод особи в виде словаря
+        :param parameters: параметры ГА
+        :return: словарь описания особи
+        """
+        return {'code': self.code, 'rank': self.rank, 'genotype': self.transcript_individual(parameters)}
 
     def transcript_individual(self, parameters: Parameters) -> List[str]:
         """
