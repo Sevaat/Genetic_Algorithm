@@ -2,8 +2,8 @@ import json
 import os
 from pathlib import Path
 from typing import Callable
-from src.classical_genetic_algorithm.options_ga.operators import get_operators
-from src.classical_genetic_algorithm.options_ga.parameters import get_parameters
+from src.classical_genetic_algorithm.options_ga.operators import Operators
+from src.classical_genetic_algorithm.options_ga.parameters import Parameters
 
 
 class CGA:
@@ -45,8 +45,31 @@ class CGA:
     def __get_operators_and_parameters(users_function: Callable):
         data = CGA.__load_data()
 
-        operators = get_operators(data["operators"], users_function)
-        parameters = get_parameters(data["parameters"])
+        operators = Operators(data["operators"], users_function)
+        parameters = Parameters(data["parameters"])
 
         return operators, parameters
+
+    def run(self):
+        """
+        Функция для оптимизации с использованием классического генетического алгоритма
+        :return:
+        """
+        population = self.operators.population_initialization()
+        population = self.operators.target_function(population)
+        era = 0
+        while era < self.parameters.number_of_eras:
+            parents = self.operators.parent_selection(population)
+            children = self.operators.recombination(population, parents)
+            del parents
+            mutants = self.operators.mutation(population, children)
+            del children
+            mutants = self.operators.target_function(mutants)
+            population = self.operators.replacement(population, mutants)
+            del mutants
+            if self.operators.stops(population):
+                break
+            else:
+                era += 1
+            return population[:self.parameters.number_of_results]
 
