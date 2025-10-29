@@ -25,7 +25,7 @@ class CGA:
 
     @staticmethod
     def __load_data():
-        filepath = Path(__file__).resolve() / "data"
+        filepath = Path(__file__).resolve().parent / "data"
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/data_cga.json"
         data = {}
