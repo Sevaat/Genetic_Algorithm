@@ -1,15 +1,15 @@
 from abc import ABC
-from typing import Callable, Union, List
+from typing import Callable, Union, List, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class TargetFunction(ABC):
     function: Callable
 
     @staticmethod
-    def get_result_user_defined_function(individuals: List[Individual], parameters: Parameters) -> List[Individual]:
+    def get_result_user_defined_function(individuals: List[Individual], parameters: Any) -> List[Individual]:
         """
         Пользовательская целевая функция
         :param parameters: параметры ГА

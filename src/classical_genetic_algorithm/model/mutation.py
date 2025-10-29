@@ -1,15 +1,15 @@
 from abc import ABC
 import random
-from typing import List
+from typing import List, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 from src.classical_genetic_algorithm.utils.duplicate_check import DuplicateCheck
 
 
 class Mutation(ABC):
     @staticmethod
-    def inversion_one_bit(population: List[Individual], children: List[Individual], parameters: Parameters) -> List[Individual]:
+    def inversion_one_bit(population: List[Individual], children: List[Individual], parameters: Any) -> List[Individual]:
         """
         Оператор мутации (изменение параметра особи с некоторой заданной вероятностью)
         :param parameters: параметры ГА
@@ -30,7 +30,6 @@ class Mutation(ABC):
 
             # проверка на корректные значения и дублирование после мутации
             new_individual = Individual.new_individual_by_code(new_code, parameters)
-            mutants.append(new_individual)
             if new_individual is not None:
                 if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
                     mutants.append(new_individual)

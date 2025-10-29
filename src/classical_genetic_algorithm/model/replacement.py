@@ -1,15 +1,15 @@
 from abc import ABC
-from typing import List
+from typing import List, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.operators import Operators
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.operators import Operators
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class Replacement(ABC):
     @staticmethod
-    def elite(individuals_1: List[Individual], individuals_2: List[Individual], parameters: Parameters,
-              operators: Operators) -> List[Individual]:
+    def elite(individuals_1: List[Individual], individuals_2: List[Individual], parameters: Any,
+              operators: Any) -> List[Individual]:
         """
         Замена популяции через элитизм (неизменным остаётся % лучших особей)
         :param operators: операторы ГА
@@ -28,8 +28,8 @@ class Replacement(ABC):
         return new_individuals
 
     @staticmethod
-    def simple_cut(individuals_1: List[Individual], individuals_2: List[Individual], parameters: Parameters,
-                   operators: Operators) -> List[Individual]:
+    def simple_cut(individuals_1: List[Individual], individuals_2: List[Individual], parameters: Any,
+                   operators: Any) -> List[Individual]:
         """
         Замена популяции через отсечения лучших особей
         :param individuals_1: список особей в начальной популяции

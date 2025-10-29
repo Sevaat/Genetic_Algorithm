@@ -1,14 +1,14 @@
 from abc import ABC
-from typing import List
+from typing import List, Any
 
 from src.classical_genetic_algorithm.model.individual import IndividualFactory, Individual
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 from src.classical_genetic_algorithm.utils.duplicate_check import DuplicateCheck
 
 
 class Population(ABC):
     @staticmethod
-    def get_new_random_population(parameters: Parameters) -> List[Individual]:
+    def get_new_random_population(parameters: Any) -> List[Individual]:
         """
         Создание новой случайной популяции без повторений
         :param parameters: параметры ГА

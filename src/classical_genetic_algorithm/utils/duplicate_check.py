@@ -1,13 +1,13 @@
 from abc import ABC
-from typing import List
+from typing import List, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class DuplicateCheck(ABC):
     @staticmethod
-    def individual_addition(population: List[Individual], individual: Individual, parameters: Parameters) -> bool:
+    def individual_addition(population: List[Individual], individual: Individual, parameters: Any) -> bool:
         """
         Проверка на количество повторений особи
         :param parameters: параметры ГА

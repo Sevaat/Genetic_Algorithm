@@ -1,4 +1,4 @@
-from typing import Callable, Any, Dict
+from typing import Callable, Any, Dict, Tuple
 
 from src.classical_genetic_algorithm.model.population_initialization import Population
 from src.classical_genetic_algorithm.utils.purpose import Purpose
@@ -15,7 +15,7 @@ class Operators(BaseModel):
     Операторы классического генетического алгоритма
     """
     parent_selection: Callable             # тип выбора родителей
-    stops: Callable                        # условия останова
+    stops: Tuple[Callable, Callable]       # условия останова
     purpose: Callable                      # цель оптимизации (min, max)
     recombination: Callable                # тип рекомбинации
     target_function: Callable              # целевая функция
@@ -56,7 +56,7 @@ class Operators(BaseModel):
             raise KeyError
 
     @staticmethod
-    def _get_stops(value: str) -> Callable:
+    def _get_stops(value: str) -> Tuple[Callable, Callable]:
         """
         Оператор останова
         :param value: пользовательский выбор оператора
@@ -67,7 +67,7 @@ class Operators(BaseModel):
             'immutability': Stops.stopping_for_the_best
         }
         if value in s_dict.keys():
-            return s_dict[value]
+            return s_dict[value], Stops.stop_for_homogeneity
         else:
             raise KeyError
 

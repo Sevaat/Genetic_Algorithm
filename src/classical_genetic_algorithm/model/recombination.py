@@ -1,16 +1,16 @@
 from abc import ABC
 import random
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 from src.classical_genetic_algorithm.utils.duplicate_check import DuplicateCheck
 
 
 class Recombination(ABC):
     @staticmethod
     def point_crossing(population: List[Individual], parents: List[Tuple[Individual, Individual]],
-                       parameters: Parameters) -> List[Individual]:
+                       parameters: Any) -> List[Individual]:
         """
         Точечное скрещивание (случайная точка (точки) для обмена частью генотипа особей)
         :param parameters: параметры ГА
@@ -31,7 +31,7 @@ class Recombination(ABC):
 
     @staticmethod
     def segmental_crossing(population: List[Individual], parents: List[Tuple[Individual, Individual]],
-                           parameters: Parameters) -> List[Individual]:
+                           parameters: Any) -> List[Individual]:
         """
         Сегментное скрещивание (случайная точка (точки) для обмена частью генотипа особей с вероятностью 20%)
         :param parameters: параметры ГА
@@ -59,7 +59,7 @@ class Recombination(ABC):
 
     @staticmethod
     def even_crossing(population: List[Individual], parents: List[Tuple[Individual, Individual]],
-                      parameters: Parameters) -> List[Individual]:
+                      parameters: Any) -> List[Individual]:
         """
         Равномерное скрещивание (выбор каждого детского признака от родителей с вероятностью 50%)
         :param parameters: параметры ГА
@@ -81,7 +81,7 @@ class Recombination(ABC):
         return children
 
     @staticmethod
-    def get_points(length: int, parameters: Parameters) -> List[int]:
+    def get_points(length: int, parameters: Any) -> List[int]:
         """
         Получение точек для рекомбинации
         :param parameters: параметры ГА
@@ -95,7 +95,7 @@ class Recombination(ABC):
         return points
 
     @staticmethod
-    def child_addition(population: List[Individual], children_1: str, children_2: str, parameters: Parameters) -> List[
+    def child_addition(population: List[Individual], children_1: str, children_2: str, parameters: Any) -> List[
         Individual]:
         """
         Проверка на дубликаты и добавление новых особей в список детей

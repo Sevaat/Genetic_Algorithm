@@ -1,15 +1,15 @@
 from abc import ABC
 import random
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.options.operators import Operators
+#from src.classical_genetic_algorithm.options.operators import Operators
 from src.classical_genetic_algorithm.utils.purpose import Purpose
 
 
 class Selection(ABC):
     @staticmethod
-    def standard_selection(individuals: List[Individual], operators: Operators) -> List[Tuple[Individual, Individual]]:
+    def standard_selection(individuals: List[Individual], operators: Any) -> List[Tuple[Individual, Individual]]:
         """
         Выбор родителей в соответствии с весом (значение ЦФ)
         :param operators: операторы ГА
@@ -27,7 +27,7 @@ class Selection(ABC):
         return parents
 
     @staticmethod
-    def stochastic_universal_sampling(individuals: List[Individual], operators: Operators) -> list[
+    def stochastic_universal_sampling(individuals: List[Individual], operators: Any) -> list[
         tuple[Individual, Individual]]:
         """
         Выбор родителей с помощью стохастической универсальной выборки (1 - случайно; 3 - со смещением в четверть)
@@ -64,7 +64,7 @@ class Selection(ABC):
         return parents
 
     @staticmethod
-    def get_weights(individuals: List[Individual], operators: Operators) -> List[float]:
+    def get_weights(individuals: List[Individual], operators: Any) -> List[float]:
         """
         Получение весов для определения родителей по значению ЦФ и цели оптимизации
         :param operators: операторы ГА

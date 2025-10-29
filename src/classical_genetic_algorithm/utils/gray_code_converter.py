@@ -1,12 +1,13 @@
 from abc import ABC
-from typing import List
+from typing import List, Any
 
-from src.classical_genetic_algorithm.options.parameters import Parameters
+
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class GrayCodeConverter(ABC):
     @staticmethod
-    def __get_maximum_discharge(parameters: Parameters) -> List[int]:
+    def __get_maximum_discharge(parameters: Any) -> List[int]:
         """
         Определение наибольших разрядов параметров особи в бинарной кодировке
         :param parameters: параметры ГА
@@ -20,7 +21,7 @@ class GrayCodeConverter(ABC):
         return maximum_discharge
 
     @staticmethod
-    def convert_to_code(genotype: List[int], parameters: Parameters) -> str:
+    def convert_to_code(genotype: List[int], parameters: Any) -> str:
         """
         Преобразование списка значений параметров особи в код Грея с определенной разрядностью
         :param genotype: генотип особи (через индексы)
@@ -37,7 +38,7 @@ class GrayCodeConverter(ABC):
         return gray_code
 
     @staticmethod
-    def convert_from_code(code: str, parameters: Parameters) -> List[int]:
+    def convert_from_code(code: str, parameters: Any) -> List[int]:
         """
         Преобразование кода Грея с определенной разрядностью в список значений параметров особи
         :param parameters: параметры ГА

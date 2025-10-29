@@ -1,7 +1,7 @@
 import random
 from typing import Union, Self, List, Dict, Any
 
-from src.classical_genetic_algorithm.options.parameters import Parameters
+#from src.classical_genetic_algorithm.options.parameters import Parameters
 from src.classical_genetic_algorithm.utils.gray_code_converter import GrayCodeConverter
 
 
@@ -16,7 +16,13 @@ class Individual:
     def __ne__(self, other):
         return self.code != other.code
 
-    def to_dict(self, parameters: Parameters) -> Dict[str, Any]:
+    def __str__(self):
+        return str(self.code)
+
+    def __repr__(self):
+        return str(self.code)
+
+    def to_dict(self, parameters: Any) -> Dict[str, Any]:
         """
         Вывод особи в виде словаря
         :param parameters: параметры ГА
@@ -24,7 +30,7 @@ class Individual:
         """
         return {'code': self.code, 'rank': self.rank, 'genotype': self.transcript_individual(parameters)}
 
-    def transcript_individual(self, parameters: Parameters) -> List[str]:
+    def transcript_individual(self, parameters: Any) -> List[str]:
         """
         Перевод кода особи в список параметров
         :param parameters: параметры ГА
@@ -34,7 +40,7 @@ class Individual:
         genotype = [parameters.gene_sets[i][p] for i, p in enumerate(genotype)]
         return genotype
 
-    def overstepping(self, parameters: Parameters) -> bool:
+    def overstepping(self, parameters: Any) -> bool:
         """
         Проверка допустимости параметров особи (нахождение в допустимых пределах)
         :param parameters: параметры ГА
@@ -49,7 +55,7 @@ class Individual:
         return flag
 
     @classmethod
-    def new_individual_by_code(cls, code: str, parameters: Parameters) -> Union[Self, None]:
+    def new_individual_by_code(cls, code: str, parameters: Any) -> Union[Self, None]:
         """
         Создание особи по коду Грея
         :param code: код Грея особи
@@ -65,7 +71,7 @@ class Individual:
 
 class IndividualFactory:
     @staticmethod
-    def new_random_individual(parameters: Parameters) -> Individual:
+    def new_random_individual(parameters: Any) -> Individual:
         """
         Фабрика для производства случайных особей
         :param parameters: параметры ГА

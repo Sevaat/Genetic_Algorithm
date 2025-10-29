@@ -12,8 +12,15 @@ from src.classical_genetic_algorithm.options.parameters import Parameters
 class CGA:
     def __init__(self, users_function: Callable):
         self._operators, self._parameters = CGA._get_operators_and_parameters(users_function)
-        self._best_individual = None
-        self._counter = None
+
+    @property
+    def operators(self):
+        return self._operators
+
+    @property
+    def parameters(self):
+        return self._parameters
+
 
     @staticmethod
     def _load_data() -> Dict[str, Any]:
@@ -38,7 +45,7 @@ class CGA:
         return data
 
     @staticmethod
-    def _save_data(population: List[Individual]) -> None:
+    def _save_data(population: List[Individual], parameters: Parameters) -> None:
         """
         Запись в JSON файл
         :return:
@@ -48,7 +55,7 @@ class CGA:
         filepath = f"{filepath}/result_cga_{datetime.now().strftime("%d.%m.%Y_%H-%M-%S")}.json"
         try:
             with open(filepath, "w", encoding="utf-8") as file:
-                json.dump(population, file)
+                json.dump([ind.to_dict(parameters) for ind in population], file)
             print("Запись результатов прошла успешно")
         except Exception as e:
             print(f"Произошла ошибка: {e}")
@@ -70,27 +77,31 @@ class CGA:
         Оптимизировать задачи с использованием классического генетического алгоритма
         :return:
         """
-        population = self._operators.population_initialization(self._parameters)
-        population = self._operators.target_function(population, self._parameters)
+        best_individual = None
+        counter = None
+
+        population = self.operators.population_initialization(self.parameters)
+        population = self.operators.target_function(population, self.parameters)
         era = 0
         while True:
-            parents = self._operators.parent_selection(population, self._parameters)
-            children = self._operators.recombination(population, parents, self._parameters)
+            parents = self.operators.parent_selection(population, self.operators)
+            children = self.operators.recombination(population, parents, self.parameters)
             del parents
-            mutants = self._operators.mutation(population, children, self._parameters)
+            mutants = self.operators.mutation(population, children, self.parameters)
             del children
-            mutants = self._operators.target_function(mutants, self._parameters)
-            population = self._operators.replacement(population, mutants, self._parameters, self._operators)
+            mutants = self.operators.target_function(mutants, self.parameters)
+            population = self.operators.replacement(population, mutants, self.parameters, self.operators)
             del mutants
-            stops_dict = {
+            data_stops = {
                 'individuals': population,
-                'best_individual': self._best_individual,
-                'counter': self._counter,
+                'best_individual': best_individual,
+                'counter': counter,
                 'parameters': self._parameters,
                 'era': era
             }
-            if self._operators.stops(stops_dict):
+            if self.operators.stops[0](**data_stops) or self.operators.stops[1](**data_stops):
+                print(f'Расчет окончен на эре: {era}')
                 break
             else:
                 era += 1
-        self._save_data(population[:self._parameters.number_of_results])
+        self._save_data(population[:self.parameters.number_of_results], self.parameters)
