@@ -14,7 +14,7 @@ class Parameters(BaseModel):
     change_counter: int = Field(gt=0, le=1000000)                          # счётчик изменений лучшей особи
     number_of_results: int = Field(gt=0, le=1000000)                       # количество выводимых результатов
     recombination_point_count: int = Field(gt=0, le=1000000)               # количество точек рекомбинации
-    number_of_recurring_individuals: int = Field(ge=0, le=1000000)         # количество повторяющихся особей (0 - сколько угодно)
+    number_of_duplicate: int = Field(ge=0, le=1000000)                     # количество повторяющихся особей (0 - сколько угодно)
 
     def __init__(self, parameters: Dict[str, Any], **data: Any):
         for key in vars(self):

@@ -1,9 +1,9 @@
 from copy import deepcopy
-
 import pytest
 from pydantic import ValidationError
 
-from src.classical_genetic_algorithm.options_ga.parameters import Parameters
+from src.classical_genetic_algorithm.options.parameters import Parameters
+
 
 def test_parameters_1(fixture_parameters):
     """Тест на корректную инициализацию"""
@@ -18,6 +18,7 @@ def test_parameters_1(fixture_parameters):
     assert parameters.recombination_point_count == 1
     assert parameters.number_of_recurring_individuals == 0
 
+
 def test_parameters_2(fixture_parameters):
     """Тест на некорректную инициализацию (значения выходят за диапазон)"""
     for key in fixture_parameters.keys():
@@ -30,6 +31,7 @@ def test_parameters_2(fixture_parameters):
         parameters[key] = -1
         with pytest.raises(ValidationError):
             Parameters(parameters)
+
 
 def test_parameters_3(fixture_parameters):
     """Тест на некорректную инициализацию (неполнота данных)"""

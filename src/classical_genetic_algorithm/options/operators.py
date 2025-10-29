@@ -1,6 +1,6 @@
 from typing import Callable, Any, Dict
 
-from src.classical_genetic_algorithm.model.cga_population_initialization import Population
+from src.classical_genetic_algorithm.model.population_initialization import Population
 from src.classical_genetic_algorithm.utils.cga_purpose import Purpose
 from src.classical_genetic_algorithm.model.cga_recombination import Recombination
 from src.classical_genetic_algorithm.model.cga_replacement import Replacement

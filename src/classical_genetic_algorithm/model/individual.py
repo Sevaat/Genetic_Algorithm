@@ -1,7 +1,8 @@
 import random
-from typing import Union, Self
+from typing import Union, Self, List
 
-from src.classical_genetic_algorithm.utils.cga_gray_code_converter import GrayCodeConverter
+from src.classical_genetic_algorithm.options.parameters import Parameters
+from src.classical_genetic_algorithm.utils.gray_code_converter import GrayCodeConverter
 
 
 class Individual:
@@ -9,71 +10,63 @@ class Individual:
         self.code = None    # код Грея особи
         self.rank = None    # значение функции приспособленности
 
-    def __str__(self):
-        return f'Код: {self.code}. Значение ЦФ: {self.rank}. Генотип: {self.transcript_individual()}'
-
-    def __repr__(self):
-        return f'Код: {self.code}. Значение ЦФ: {self.rank}. Генотип: {self.transcript_individual()}'
-
     def __eq__(self, other):
         return self.code == other.code
 
     def __ne__(self, other):
         return self.code != other.code
 
-    def transcript_individual(self) -> [str]:
+    def transcript_individual(self, parameters: Parameters) -> List[str]:
         """
         Перевод кода особи в список параметров
+        :param parameters: параметры ГА
         :return: список параметров
         """
-        from src.classical_genetic_algorithm.options_ga.cga_config import Config
-        config = Config()
-        genotype = GrayCodeConverter.convert_from_code(self.code)
-        genotype = [config.parameters.gene_sets[i][p] for i, p in enumerate(genotype)]
+        genotype = GrayCodeConverter.convert_from_code(self.code, parameters)
+        genotype = [parameters.gene_sets[i][p] for i, p in enumerate(genotype)]
         return genotype
 
-    def overstepping(self) -> bool:
+    def overstepping(self, parameters: Parameters) -> bool:
         """
         Проверка допустимости параметров особи (нахождение в допустимых пределах)
+        :param parameters: параметры ГА
         :return: True - если в допустимых пределах, False - иначе
         """
-        from src.classical_genetic_algorithm.options_ga.cga_config import Config
-        config = Config()
-        genotype = GrayCodeConverter.convert_from_code(self.code)
+        genotype = GrayCodeConverter.convert_from_code(self.code, parameters)
         flag = True
         for i, gene in enumerate(genotype):
-            if gene >= len(config.parameters.gene_sets[i]):
+            if gene >= len(parameters.gene_sets[i]):
                 flag = False
                 break
         return flag
 
     @classmethod
-    def new_individual_by_code(cls, code: str) -> Union[Self, None]:
+    def new_individual_by_code(cls, code: str, parameters: Parameters) -> Union[Self, None]:
         """
         Создание особи по коду Грея
         :param code: код Грея особи
+        :param parameters: параметры ГА
         :return: особь
         """
         individual = cls()
         individual.code = code
-        if individual.overstepping():
+        if individual.overstepping(parameters):
             return individual
         else:
             return None
 
 class IndividualFactory:
     @staticmethod
-    def new_random_individual():
+    def new_random_individual(parameters: Parameters) -> Individual:
         """
         Фабрика для производства случайных особей
+        :param parameters: параметры ГА
         :return: случайная особь
         """
-        from src.classical_genetic_algorithm.options_ga.cga_config import Config
-        config = Config()
         individual = Individual()
         new_genotype = []
-        for gene_set in config.parameters.gene_sets:
+        for gene_set in parameters.gene_sets:
             individual_chromosome = random.randint(0, len(gene_set) - 1)
             new_genotype.append(individual_chromosome)
-        individual.code = GrayCodeConverter.convert_to_code(new_genotype)
+        individual.code = GrayCodeConverter.convert_to_code(new_genotype, parameters)
         return individual

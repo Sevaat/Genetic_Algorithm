@@ -13,7 +13,7 @@ from src.classical_genetic_algorithm.utils.cga_file_manager import FileManager
 #         :return: None
 #         """
 #         setting, parameters = FileManager.open_file(filepath)
-#         from src.classical_genetic_algorithm.options_ga.cga_config import Config
+#         from src.classical_genetic_algorithm.options.cga_config import Config
 #         Config(setting, parameters, user_function)
 #         del setting, parameters
 #         result = start()

@@ -2,8 +2,8 @@ import json
 import os
 from pathlib import Path
 from typing import Callable
-from src.classical_genetic_algorithm.options_ga.operators import Operators
-from src.classical_genetic_algorithm.options_ga.parameters import Parameters
+from src.classical_genetic_algorithm.options.operators import Operators
+from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class CGA:
@@ -25,6 +25,10 @@ class CGA:
 
     @staticmethod
     def __load_data():
+        """
+        Читать JSON файл
+        :return:
+        """
         filepath = Path(__file__).resolve().parent / "data"
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/data_cga.json"
@@ -43,20 +47,25 @@ class CGA:
 
     @staticmethod
     def __get_operators_and_parameters(users_function: Callable):
+        """
+        Получать операторы и параметры ГА
+        :param users_function: пользовательская функция
+        :return: операторы, параметры ГА
+        """
         data = CGA.__load_data()
-
         operators = Operators(data["operators"], users_function)
         parameters = Parameters(data["parameters"])
-
         return operators, parameters
 
     def run(self):
         """
-        Функция для оптимизации с использованием классического генетического алгоритма
+        Оптимизировать задачи с использованием классического генетического алгоритма
         :return:
         """
         population = self.operators.population_initialization()
         population = self.operators.target_function(population)
+
+
         era = 0
         while era < self.parameters.number_of_eras:
             parents = self.operators.parent_selection(population)
