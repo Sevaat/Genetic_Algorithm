@@ -62,8 +62,8 @@ class CGA:
         Оптимизировать задачи с использованием классического генетического алгоритма
         :return:
         """
-        population = self.operators.population_initialization()
-        population = self.operators.target_function(population)
+        population = self.operators.population_initialization(self.parameters)
+        population = self.operators.target_function(population, self.parameters)
 
 
         era = 0

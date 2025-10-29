@@ -7,7 +7,7 @@ from src.classical_genetic_algorithm.model.cga_replacement import Replacement
 from src.classical_genetic_algorithm.model.cga_parent_selection import Selection
 from src.classical_genetic_algorithm.model.cga_stops import Stops
 from src.classical_genetic_algorithm.model.cga_mutation import Mutation
-from src.classical_genetic_algorithm.model.cga_target_function import TargetFunction
+from src.classical_genetic_algorithm.model.target_function import TargetFunction
 from pydantic import BaseModel, ValidationError
 
 class Operators(BaseModel):
@@ -34,7 +34,7 @@ class Operators(BaseModel):
         operations["population_initialization"] = self._get_population_initialization(operations["population_initialization"])
         operations["mutation"] = self._get_mutation(operations["mutation"])
         operations["replacement"] = self._get_replacement(operations["replacement"])
-        TargetFunction._function = user_function
+        TargetFunction.function = user_function
         operations["target_function"] = self._target_function = TargetFunction.get_result_user_defined_function
         operations.update(data)
         super().__init__(**operations)

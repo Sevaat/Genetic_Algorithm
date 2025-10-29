@@ -1,24 +1,27 @@
 from abc import ABC
-from typing import Callable, Union
+from typing import Callable, Union, List
 
-from src.classical_genetic_algorithm.model.cga_individual import Individual
+from src.classical_genetic_algorithm.model.individual import Individual
+from src.classical_genetic_algorithm.options.parameters import Parameters
+
 
 class TargetFunction(ABC):
-    _function: Union[Callable, None] = None
+    function: Callable
 
     @staticmethod
-    def get_result_user_defined_function(individuals: [Individual]) -> [Individual]:
+    def get_result_user_defined_function(individuals: List[Individual], parameters: Parameters) -> List[Individual]:
         """
         Пользовательская целевая функция
+        :param parameters: параметры ГА
         :param individuals: список особей
         :return: список особей без некорректных (значение хромосомы выходит за допустимые границы)
         """
         new_individuals = []
         for ind in individuals:
-            if ind.overstepping():
-                individual_parameters = ind.transcript_individual()
+            if ind.overstepping(parameters):
+                individual_parameters = ind.transcript_individual(parameters)
                 try:
-                    ind.rank = TargetFunction._function(individual_parameters)
+                    ind.rank = TargetFunction.function(individual_parameters)
                 except Exception as e:
                     print(f'Ошибка: {e}')
                     print('Введена некорректная функция или функция принимает некорректные аргументы.')
