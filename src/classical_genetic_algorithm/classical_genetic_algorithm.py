@@ -50,7 +50,7 @@ class CGA:
         Запись в JSON файл
         :return:
         """
-        filepath = Path(__file__).resolve().parent.parent / "result"
+        filepath = Path(__file__).resolve().parent / "result"
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/result_cga_{datetime.now().strftime("%d.%m.%Y_%H-%M-%S")}.json"
         try:
