@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, List, Dict, Any, Tuple
+from typing import Any, Callable, Dict, List, Tuple
 
 from src.classical_genetic_algorithm.model.individual import Individual
 from src.classical_genetic_algorithm.options.operators import Operators
@@ -14,13 +14,12 @@ class CGA:
         self._operators, self._parameters = CGA._get_operators_and_parameters(users_function)
 
     @property
-    def operators(self):
+    def operators(self) -> Operators:
         return self._operators
 
     @property
-    def parameters(self):
+    def parameters(self) -> Parameters:
         return self._parameters
-
 
     @staticmethod
     def _load_data() -> Dict[str, Any]:
@@ -28,7 +27,7 @@ class CGA:
         Читать JSON файл
         :return:
         """
-        filepath = Path(__file__).resolve().parent / "data"
+        filepath = str(Path(__file__).resolve().parent / "data")
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/data_cga.json"
         data = {}
@@ -50,7 +49,7 @@ class CGA:
         Запись в JSON файл
         :return:
         """
-        filepath = Path(__file__).resolve().parent / "result"
+        filepath = str(Path(__file__).resolve().parent / "result")
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/result_cga_{datetime.now().strftime("%d.%m.%Y_%H-%M-%S")}.json"
         try:
@@ -84,24 +83,24 @@ class CGA:
         population = self.operators.target_function(population, self.parameters)
         era = 0
         while True:
-            parents = self.operators.parent_selection(population, self.operators)
+            parents = self.operators.parent_selection(population, self.operators.purpose)
             children = self.operators.recombination(population, parents, self.parameters)
             del parents
             mutants = self.operators.mutation(population, children, self.parameters)
             del children
             mutants = self.operators.target_function(mutants, self.parameters)
-            population = self.operators.replacement(population, mutants, self.parameters, self.operators)
+            population = self.operators.replacement(population, mutants, self.parameters, self.operators.purpose)
             del mutants
             data_stops = {
-                'individuals': population,
-                'best_individual': best_individual,
-                'counter': counter,
-                'parameters': self._parameters,
-                'era': era
+                "individuals": population,
+                "best_individual": best_individual,
+                "counter": counter,
+                "parameters": self._parameters,
+                "era": era,
             }
             if self.operators.stops[0](**data_stops) or self.operators.stops[1](**data_stops):
-                print(f'Расчет окончен на эре: {era}')
+                print(f"Расчет окончен на эре: {era}")
                 break
             else:
                 era += 1
-        self._save_data(population[:self.parameters.number_of_results], self.parameters)
+        self._save_data(population[: self.parameters.number_of_results], self.parameters)

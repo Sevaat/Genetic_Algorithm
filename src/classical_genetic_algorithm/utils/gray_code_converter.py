@@ -1,13 +1,12 @@
 from abc import ABC
-from typing import List, Any
+from typing import List
 
-
-#from src.classical_genetic_algorithm.options.parameters import Parameters
+from src.classical_genetic_algorithm.options.parameters import Parameters
 
 
 class GrayCodeConverter(ABC):
     @staticmethod
-    def __get_maximum_discharge(parameters: Any) -> List[int]:
+    def __get_maximum_discharge(parameters: Parameters) -> List[int]:
         """
         Определение наибольших разрядов параметров особи в бинарной кодировке
         :param parameters: параметры ГА
@@ -21,7 +20,7 @@ class GrayCodeConverter(ABC):
         return maximum_discharge
 
     @staticmethod
-    def convert_to_code(genotype: List[int], parameters: Any) -> str:
+    def convert_to_code(genotype: List[int], parameters: Parameters) -> str:
         """
         Преобразование списка значений параметров особи в код Грея с определенной разрядностью
         :param genotype: генотип особи (через индексы)
@@ -38,7 +37,7 @@ class GrayCodeConverter(ABC):
         return gray_code
 
     @staticmethod
-    def convert_from_code(code: str, parameters: Any) -> List[int]:
+    def convert_from_code(code: str, parameters: Parameters) -> List[int]:
         """
         Преобразование кода Грея с определенной разрядностью в список значений параметров особи
         :param parameters: параметры ГА
@@ -49,14 +48,14 @@ class GrayCodeConverter(ABC):
         j = 0
         maximum_discharge = GrayCodeConverter.__get_maximum_discharge(parameters)
         for md in maximum_discharge:
-            part = code[j: j + md]
+            part = code[j : j + md]
             binary = part[0]
             for i in range(1, len(part)):
-                if part[i] == '1':
-                    if binary[i - 1] == '0':
-                        binary += '1'
+                if part[i] == "1":
+                    if binary[i - 1] == "0":
+                        binary += "1"
                     else:
-                        binary += '0'
+                        binary += "0"
                 else:
                     binary += binary[i - 1]
             genotype.append(int(binary, 2))

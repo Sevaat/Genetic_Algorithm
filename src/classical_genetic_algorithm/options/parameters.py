@@ -1,20 +1,22 @@
-from typing import List, Any, Dict, Union
-from pydantic import BaseModel, ValidationError, Field
+from typing import Any, Dict, List
+
+from pydantic import BaseModel, Field, ValidationError
 
 
 class Parameters(BaseModel):
     """
     Параметры классического генетического алгоритма
     """
-    number_of_individuals: int = Field(gt=0, le=1000000)                   # количество особей в популяции
-    proportion_of_elite_individuals: float = Field(ge=0, le=1)             # доля элитных особей
-    number_of_eras: int = Field(gt=0, le=1000000)                          # количество эпох
-    gene_sets: List[Any]                                                   # данные хромосом
-    mutation_probability: float = Field(ge=0, le=1)                        # вероятность мутации
-    change_counter: int = Field(gt=0, le=1000000)                          # счётчик изменений лучшей особи
-    number_of_results: int = Field(gt=0, le=1000000)                       # количество выводимых результатов
-    recombination_point_count: int = Field(gt=0, le=1000000)               # количество точек рекомбинации
-    number_of_duplicate: int = Field(ge=0, le=1000000)                     # количество повторяющихся особей (0 - сколько угодно)
+
+    number_of_individuals: int = Field(gt=0, le=1000000)  # количество особей в популяции
+    proportion_of_elite_individuals: float = Field(ge=0, le=1)  # доля элитных особей
+    number_of_eras: int = Field(gt=0, le=1000000)  # количество эпох
+    gene_sets: List[Any]  # данные хромосом
+    mutation_probability: float = Field(ge=0, le=1)  # вероятность мутации
+    change_counter: int = Field(gt=0, le=1000000)  # счётчик изменений лучшей особи
+    number_of_results: int = Field(gt=0, le=1000000)  # количество выводимых результатов
+    recombination_point_count: int = Field(gt=0, le=1000000)  # количество точек рекомбинации
+    number_of_duplicate: int = Field(ge=0, le=1000000)  # количество повторяющихся особей (0 - сколько угодно)
 
     def __init__(self, parameters: Dict[str, Any], **data: Any):
         for key in vars(self):
