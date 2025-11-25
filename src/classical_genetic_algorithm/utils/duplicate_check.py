@@ -15,7 +15,8 @@ class DuplicateCheck(ABC):
         :param individual: особь, количество которой подсчитывается
         :return: True - если количество вхождений не превышено; False - иначе
         """
-        if parameters.number_of_duplicate == 0 or parameters.number_of_duplicate > population.count(individual):
+        if (parameters.number_of_recurring_individuals == 0 or
+                parameters.number_of_recurring_individuals > population.count(individual)):
             return True
         else:
             return False

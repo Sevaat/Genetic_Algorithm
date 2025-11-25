@@ -10,7 +10,7 @@ def test_parameters_1(fixture_parameters):
     parameters = Parameters(fixture_parameters)
     assert parameters.number_of_individuals == 100
     assert parameters.proportion_of_elite_individuals == 0.2
-    assert parameters.number_of_eras == 10
+    assert parameters.number_of_eras == 100
     assert parameters.gene_sets == [["0", "1", "2", "3", "4"], ["5", "6", "7", "8", "9"]]
     assert parameters.mutation_probability == 0.02
     assert parameters.change_counter == 10

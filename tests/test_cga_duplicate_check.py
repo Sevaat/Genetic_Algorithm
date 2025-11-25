@@ -14,10 +14,10 @@ def test_duplicate_check(fixture_parameters):
         Individual().new_individual_by_code("000011", parameters)
     ]
 
-    parameters.number_of_duplicate = 0  # можно сколько угодно дубликатов
+    parameters.number_of_recurring_individuals = 0  # можно сколько угодно дубликатов
     individual = Individual().new_individual_by_code("000000", parameters)
     assert DuplicateCheck.individual_addition(population, individual, parameters)
 
-    parameters.number_of_duplicate = 1  # возможен только один дубликат
+    parameters.number_of_recurring_individuals = 1  # возможен только один дубликат
     individual = Individual().new_individual_by_code("000000", parameters)
     assert not DuplicateCheck.individual_addition(population, individual, parameters)

@@ -8,12 +8,12 @@ def test_individual(fixture_parameters):
     # gene_sets = [[0 1 2 3 4], [5 6 7 8 9]]: количество знаков для первого набора - 3, для второго набора - 3
 
     individual = Individual()
-    assert individual.code is None
-    assert individual.rank is None
+    assert individual.code == ""
+    assert individual.rank == 0
 
     individual = Individual().new_individual_by_code("000000", parameters)
     assert individual.code == "000000"
-    assert individual.rank is None
+    assert individual.rank == 0
 
     individual = IndividualFactory.new_random_individual(parameters)
     assert isinstance(individual, Individual)
