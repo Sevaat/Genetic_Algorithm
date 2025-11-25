@@ -21,7 +21,7 @@ class Replacement(ABC):
         n_elite = int(parameters.proportion_of_elite_individuals * parameters.number_of_individuals)
         if len(individuals_1) - n_elite > len(individuals_2):
             n_elite = len(individuals_1) - n_elite
-        new_individuals = individuals_1[:n_elite]
+        new_individuals: List[Individual] = individuals_1[:n_elite]
         new_individuals += individuals_2
         new_individuals = sorter(new_individuals)
         return new_individuals[: parameters.number_of_individuals]
@@ -38,6 +38,6 @@ class Replacement(ABC):
         :param parameters: параметры ГА
         :return: список лучших особей и особей-мутантов в количестве не превышающем максимального значения популяции
         """
-        new_individuals = individuals_1 + individuals_2
+        new_individuals: List[Individual] = individuals_1 + individuals_2
         new_individuals = sorter(new_individuals)
         return new_individuals[: parameters.number_of_individuals]

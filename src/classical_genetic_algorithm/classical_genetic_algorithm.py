@@ -98,7 +98,7 @@ class CGA:
                 "parameters": self._parameters,
                 "era": era,
             }
-            if self.operators.stops[0](**data_stops) or self.operators.stops[1](**data_stops):
+            if self.operators.stops[0](data_stops) or self.operators.stops[1](data_stops):
                 print(f"Расчет окончен на эре: {era}")
                 break
             else:

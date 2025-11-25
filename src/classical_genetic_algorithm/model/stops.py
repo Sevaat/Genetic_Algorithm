@@ -11,7 +11,7 @@ class Stops(ABC):
         Ожидаемое содержание словаря:
         individuals: List[Individual], best_individual: Union[Individual, None], counter: int, parameters: Parameters
 
-        :param data_stops: список отсортированных особей, лучшая особь, количество повторений лучшей особи, параметры ГА
+        :param data_stops: список отсорт. особей, лучшая особь, количество повт. лучшей особи, параметры ГА
         :return: вывод True, если на протяжении ряда эпох не было изменения лучшей особи
         """
         if data_stops["best_individual"] is None:

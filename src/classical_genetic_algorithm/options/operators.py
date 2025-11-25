@@ -67,10 +67,7 @@ class Operators(BaseModel):
         :param value: пользовательский выбор оператора
         :return: функция выбранного оператора
         """
-        s_dict = {
-            "epochs": Stops.stopping_by_the_number_of_eras,
-            "immutability": Stops.stopping_for_the_best
-        }
+        s_dict = {"epochs": Stops.stopping_by_the_number_of_eras, "immutability": Stops.stopping_for_the_best}
         if value in s_dict.keys():
             return s_dict[value], Stops.stop_for_homogeneity
         else:
@@ -83,10 +80,7 @@ class Operators(BaseModel):
         :param value: пользовательский выбор оператора
         :return: функция выбранного оператора
         """
-        p_dict = {
-            "minimum": Purpose.sort_by_more,
-            "maximum": Purpose.sort_by_less
-        }
+        p_dict = {"minimum": Purpose.sort_by_more, "maximum": Purpose.sort_by_less}
         if value in p_dict.keys():
             return p_dict[value]
         else:

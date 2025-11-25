@@ -126,7 +126,7 @@ if __name__ == '__main__':
     "change_counter": 10,
     "number_of_results": 5,
     "recombination_point_count": 1,
-    "number_of_duplicate": 0,
+    "number_of_recurring_individuals": 0,
     "gene_sets": {
       "simple_set": [
         "0 1 2 3 4"
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 "change_counter" - счётчик изменений лучшей особи, целое в диапазоне (0, 1000000]  
 "number_of_results" - количество выводимых результатов, целое в диапазоне (0, 1000000]  
 "recombination_point_count" - количество точек рекомбинации, целое в диапазоне (0, 1000000]  
-"number_of_duplicate" - количество повторяющихся особей (0 - сколько угодно), целое в диапазоне [0, 1000000]  
+"number_of_recurring_individuals" - количество повторяющихся особей (0 - сколько угодно), целое в диапазоне [0, 1000000]  
 "gene_sets" - данные хромосом, сначала идут все "simple_set", потом все "step_set"  
 -- "simple_set" - список строк возможных параметров  
 -- "step_set" - словарь для генерации строковой последовательности чисел  
