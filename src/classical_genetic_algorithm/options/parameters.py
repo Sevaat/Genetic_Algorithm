@@ -40,7 +40,7 @@ class Parameters(BaseModel):
             if "simple_set" in data_gene_sets.keys():
                 for gs in data_gene_sets["simple_set"]:
                     gene_sets.append(gs.split())
-            else:
+            if "step_set" in data_gene_sets.keys():
                 for gs in data_gene_sets["step_set"]:
                     gene_set = []
                     start, end, step = gs["start"], gs["end"], gs["step"]
