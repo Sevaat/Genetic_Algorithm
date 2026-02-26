@@ -2,8 +2,8 @@ import random
 from abc import ABC
 from typing import List, Dict, Any, Callable
 
+from classical_genetic_algorithm.utils.duplicate_check import individual_addition
 from src.classical_genetic_algorithm.model.individual import Individual
-from src.classical_genetic_algorithm.utils.duplicate_check import DuplicateCheck
 
 
 def inversion_one_bit(
@@ -40,7 +40,7 @@ def inversion_one_bit(
         # проверка на корректные значения и дублирование после мутации
         new_individual = Individual.new_individual_by_code(new_code, parameters)
         if new_individual is not None:
-            if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
+            if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
 
     return mutants

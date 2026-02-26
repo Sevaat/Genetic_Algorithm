@@ -1,7 +1,7 @@
 from typing import List, Dict, Any, Callable
 
+from classical_genetic_algorithm.utils.duplicate_check import individual_addition
 from src.classical_genetic_algorithm.model.individual import Individual, IndividualFactory
-from src.classical_genetic_algorithm.utils.duplicate_check import DuplicateCheck
 
 
 def get_new_random_population(parameters: Dict[str, Any]) -> List[Individual]:
@@ -13,7 +13,7 @@ def get_new_random_population(parameters: Dict[str, Any]) -> List[Individual]:
     population: List[Individual] = []
     while len(population) < parameters['number_of_individuals']:
         individual = IndividualFactory.new_random_individual(parameters)
-        if DuplicateCheck.individual_addition(population, individual, parameters):
+        if individual_addition(population, individual, parameters):
             population.append(individual)
     return population
 

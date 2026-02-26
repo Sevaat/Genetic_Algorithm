@@ -1,7 +1,7 @@
 import random
 from typing import Any, Dict, List, Self, Union
 
-from src.classical_genetic_algorithm.utils.gray_code_converter import GrayCodeConverter
+from classical_genetic_algorithm.utils.gray_code_converter import convert_from_code, convert_to_code
 
 
 class Individual:
@@ -50,7 +50,7 @@ class Individual:
         :return: список параметров
         """
 
-        genotype = GrayCodeConverter.convert_from_code(self.code, parameters)
+        genotype = convert_from_code(self.code, parameters)
         genotype_str = [parameters['gene_sets'][i][p] for i, p in enumerate(genotype)]
 
         return genotype_str
@@ -61,7 +61,7 @@ class Individual:
         :param parameters: параметры ГА
         :return: True - если в допустимых пределах, False - иначе
         """
-        genotype = GrayCodeConverter.convert_from_code(self.code, parameters)
+        genotype = convert_from_code(self.code, parameters)
         flag = True
         for i, gene in enumerate(genotype):
             if gene >= len(parameters['gene_sets'][i]):
@@ -105,6 +105,6 @@ class IndividualFactory:
         for gene_set in parameters['gene_sets']:
             individual_chromosome = random.randint(0, len(gene_set) - 1)
             new_genotype.append(individual_chromosome)
-        individual.code = GrayCodeConverter.convert_to_code(new_genotype, parameters)
+        individual.code = convert_to_code(new_genotype, parameters)
 
         return individual
