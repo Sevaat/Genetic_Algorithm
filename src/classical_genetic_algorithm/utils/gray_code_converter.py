@@ -1,32 +1,37 @@
 from abc import ABC
-from typing import List
-
-from src.classical_genetic_algorithm.options.parameters import Parameters
+from typing import List, Dict, Any
 
 
 class GrayCodeConverter(ABC):
     @staticmethod
-    def __get_maximum_discharge(parameters: Parameters) -> List[int]:
+    def __get_maximum_discharge(parameters: Dict[str, Any]) -> List[int]:
         """
         Определение наибольших разрядов параметров особи в бинарной кодировке
+
         :param parameters: параметры ГА
+
         :return: список значений наибольших разрядов
         """
+
         maximum_discharge = []
-        for gene_set in parameters.gene_sets:
+        for gene_set in parameters['gene_sets']:
             value = len(gene_set) - 1
             discharge = bin(value)[2:]
             maximum_discharge.append(len(discharge))
+
         return maximum_discharge
 
     @staticmethod
-    def convert_to_code(genotype: List[int], parameters: Parameters) -> str:
+    def convert_to_code(genotype: List[int], parameters: Dict[str, Any]) -> str:
         """
         Преобразование списка значений параметров особи в код Грея с определенной разрядностью
+
         :param genotype: генотип особи (через индексы)
         :param parameters: параметры ГА
+
         :return: код Грея особи
         """
+
         gray_code = ""
         for i, gene in enumerate(genotype):
             gray_number = gene ^ (gene >> 1)
@@ -34,16 +39,20 @@ class GrayCodeConverter(ABC):
             maximum_discharge = GrayCodeConverter.__get_maximum_discharge(parameters)
             gray_binary = gray_binary.zfill(maximum_discharge[i])
             gray_code += gray_binary
+
         return gray_code
 
     @staticmethod
-    def convert_from_code(code: str, parameters: Parameters) -> List[int]:
+    def convert_from_code(code: str, parameters: Dict[str, Any]) -> List[int]:
         """
         Преобразование кода Грея с определенной разрядностью в список значений параметров особи
+
         :param parameters: параметры ГА
         :param code: код Грея особи
+
         :return: генотип особи (через индексы)
         """
+
         genotype = []
         j = 0
         maximum_discharge = GrayCodeConverter.__get_maximum_discharge(parameters)
@@ -60,4 +69,5 @@ class GrayCodeConverter(ABC):
                     binary += binary[i - 1]
             genotype.append(int(binary, 2))
             j += md
+
         return genotype
