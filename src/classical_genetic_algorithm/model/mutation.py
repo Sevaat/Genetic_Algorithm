@@ -31,10 +31,10 @@ def inversion_one_bit(
     for child in children:
         code_list = []
         for c in list(child.code):
-            if c == "1":
-                code_list.append(random.choices(["0", "1"], weights=[p1, p2], k=1)[0])
+            if random.random() < parameters['mutation_probability']:
+                code_list.append('1' if c == '0' else '0')
             else:
-                code_list.append(random.choices(["0", "1"], weights=[p2, p1], k=1)[0])
+                code_list.append(c)
         new_code = "".join(code_list)
 
         # проверка на корректные значения и дублирование после мутации
@@ -42,6 +42,9 @@ def inversion_one_bit(
         if new_individual is not None:
             if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
+        else:
+            if individual_addition(population + mutants, child, parameters):
+                mutants.append(child)
 
     return mutants
 
@@ -78,8 +81,11 @@ def inversion_group_bits(
         # проверка на корректные значения и дублирование после мутации
         new_individual = Individual.new_individual_by_code(new_code, parameters)
         if new_individual is not None:
-            if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
+            if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
+        else:
+            if individual_addition(population + mutants, child, parameters):
+                mutants.append(child)
 
     return mutants
 
@@ -112,8 +118,11 @@ def swap(population: List[Individual], children: List[Individual], parameters: D
         # проверка на корректные значения и дублирование после мутации
         new_individual = Individual.new_individual_by_code(new_code, parameters)
         if new_individual is not None:
-            if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
+            if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
+        else:
+            if individual_addition(population + mutants, child, parameters):
+                mutants.append(child)
 
     return mutants
 
@@ -147,8 +156,11 @@ def reverse(population: List[Individual], children: List[Individual], parameters
         # проверка на корректные значения и дублирование после мутации
         new_individual = Individual.new_individual_by_code(new_code, parameters)
         if new_individual is not None:
-            if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
+            if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
+        else:
+            if individual_addition(population + mutants, child, parameters):
+                mutants.append(child)
 
     return mutants
 
@@ -184,8 +196,12 @@ def shuffle(population: List[Individual], children: List[Individual], parameters
         # проверка на корректные значения и дублирование после мутации
         new_individual = Individual.new_individual_by_code(new_code, parameters)
         if new_individual is not None:
-            if DuplicateCheck.individual_addition(population + mutants, new_individual, parameters):
+            if individual_addition(population + mutants, new_individual, parameters):
                 mutants.append(new_individual)
+        else:
+            if individual_addition(population + mutants, child, parameters):
+                mutants.append(child)
+
     return mutants
 
 

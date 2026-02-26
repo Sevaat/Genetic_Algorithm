@@ -148,8 +148,14 @@ class CGA:
 
                 population = self.replacement(population, mutants, self.parameters, self.trend)
 
-                best_individual, counter, stop = self.stops(population, best_individual, counter, self.trend, era, self.parameters)
-                if stop:
+                best_individual, counter, stop_1, stop_2, stop_3 = self.stops(population, best_individual, counter, self.trend, era, self.parameters)
+                if stop_1 or stop_2 or stop_3:
+                    if stop_1:
+                        print('Останов по причине неизменности особи')
+                    if stop_2:
+                        print('Останов по причине окончания эр')
+                    if stop_3:
+                        print('Останов по причине однородности популяции')
                     print(f"Расчет окончен на эре: {era}")
                     break
                 else:

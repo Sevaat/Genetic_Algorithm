@@ -140,13 +140,11 @@ def child_addition(
     added_children: List[Individual] = []
     ch_1 = Individual.new_individual_by_code(children_1, parameters)
     if ch_1 is not None:
-        if individual_addition(population, ch_1, parameters):
-            added_children.append(ch_1)
+        added_children.append(ch_1)
 
     ch_2 = Individual.new_individual_by_code(children_2, parameters)
     if ch_2 is not None:
-        if individual_addition(population, ch_2, parameters):
-            added_children.append(ch_2)
+        added_children.append(ch_2)
 
     return added_children
 

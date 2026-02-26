@@ -22,9 +22,6 @@ def elite(
     if not population:
         raise KeyError('Список особей пуст')
 
-    if not mutants:
-        raise KeyError('Список мутантов пуст')
-
     n_elite = int(parameters['proportion_of_elite_individuals'] * parameters['number_of_individuals'])
 
     if len(population) - n_elite > len(mutants):
@@ -53,9 +50,6 @@ def simple_cut(
 
     if not population:
         raise KeyError('Список особей пуст')
-
-    if not mutants:
-        raise KeyError('Список мутантов пуст')
 
     new_individuals = deepcopy(population) + deepcopy(mutants)
     new_individuals = get_sorted_population(new_individuals, trend)

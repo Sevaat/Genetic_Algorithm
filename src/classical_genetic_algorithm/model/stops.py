@@ -5,7 +5,7 @@ from classical_genetic_algorithm.model.individual import Individual
 from classical_genetic_algorithm.utils.purpose import get_sorted_population
 
 
-def stopping_for_the_best(population: List[Individual], best_individual: Individual, counter: int, trend: str) -> tuple[
+def stopping_for_the_best(population: List[Individual], best_individual: Individual, counter: int, trend: str, parameters: Dict[str, Any]) -> tuple[
     Individual, int, bool]:
     """
     Проверка на неизменность лучшей особи на протяжении ряда эпох
@@ -32,7 +32,7 @@ def stopping_for_the_best(population: List[Individual], best_individual: Individ
             best_individual = copy_population[0]
             counter = 0
 
-    return best_individual, counter, (counter == 10)
+    return best_individual, counter, (counter == parameters['change_counter'])
 
 def stopping_by_the_number_of_eras(era: int, parameters: Dict[str, Any]) -> bool:
     """
@@ -66,16 +66,16 @@ def stop_for_homogeneity(population: List[Individual], trend: str) -> bool:
     return False
 
 def get_stops(population: List[Individual], best_individual: Individual, counter: int, trend: str, era: int, parameters: Dict[str, Any]) -> \
-tuple[Individual, int, bool]:
+tuple[Individual, int, bool, bool, bool]:
     """Останов"""
 
-    best_individual, counter, stop_1 = stopping_for_the_best(population, best_individual, counter, trend)
+    best_individual, counter, stop_1 = stopping_for_the_best(population, best_individual, counter, trend, parameters)
 
     stop_2 = stopping_by_the_number_of_eras(era, parameters)
 
     stop_3 = stop_for_homogeneity(population, trend)
 
-    return best_individual, counter, stop_1 or stop_2 or stop_3
+    return best_individual, counter, stop_1, stop_2, stop_3
 
 
 
