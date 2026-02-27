@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from src.classical_genetic_algorithm.model.individual import Individual
 
@@ -14,10 +14,9 @@ def individual_addition(population: List[Individual], individual: Individual, pa
     :return: True - если количество вхождений не превышено; False - иначе
     """
 
-    if (
-        parameters['number_of_recurring_individuals'] == 0
-        or parameters['number_of_recurring_individuals'] > population.count(individual)
-    ):
+    if parameters["number_of_recurring_individuals"] == 0 or parameters[
+        "number_of_recurring_individuals"
+    ] > population.count(individual):
         return True
     else:
         return False

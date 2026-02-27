@@ -1,6 +1,5 @@
 import random
-from abc import ABC
-from typing import List, Dict, Any, Callable
+from typing import Any, Callable, Dict, List
 
 from classical_genetic_algorithm.utils.duplicate_check import individual_addition
 from src.classical_genetic_algorithm.model.individual import Individual
@@ -20,19 +19,17 @@ def inversion_one_bit(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not children:
-        raise KeyError('Список детей пуст')
+        raise KeyError("Список детей пуст")
 
     mutants: List[Individual] = []
-    p1 = parameters['mutation_probability'] * 100
-    p2 = 100 - p1
     for child in children:
         code_list = []
         for c in list(child.code):
-            if random.random() < parameters['mutation_probability']:
-                code_list.append('1' if c == '0' else '0')
+            if random.random() < parameters["mutation_probability"]:
+                code_list.append("1" if c == "0" else "0")
             else:
                 code_list.append(c)
         new_code = "".join(code_list)
@@ -48,6 +45,7 @@ def inversion_one_bit(
 
     return mutants
 
+
 def inversion_group_bits(
     population: List[Individual], children: List[Individual], parameters: Dict[str, Any]
 ) -> List[Individual]:
@@ -62,16 +60,16 @@ def inversion_group_bits(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not children:
-        raise KeyError('Список детей пуст')
+        raise KeyError("Список детей пуст")
 
     mutants: List[Individual] = []
     code_length = len(children[0].code)
     for child in children:
         code_list = list(child.code)
-        if random.random() < parameters['mutation_probability']:
+        if random.random() < parameters["mutation_probability"]:
             start = random.randint(0, code_length - 1)
             end = random.randint(start, code_length - 1)
             for i in range(start, end + 1):
@@ -89,6 +87,7 @@ def inversion_group_bits(
 
     return mutants
 
+
 def swap(population: List[Individual], children: List[Individual], parameters: Dict[str, Any]) -> List[Individual]:
     """
     Обмен - два случайно выбранных гена меняются местами
@@ -101,16 +100,16 @@ def swap(population: List[Individual], children: List[Individual], parameters: D
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not children:
-        raise KeyError('Список детей пуст')
+        raise KeyError("Список детей пуст")
 
     mutants: List[Individual] = []
     code_length = len(children[0].code)
     for child in children:
         code_list = list(child.code)
-        if random.random() < parameters['mutation_probability'] and code_length > 1:
+        if random.random() < parameters["mutation_probability"] and code_length > 1:
             point_1, point_2 = random.sample(range(code_length), 2)
             code_list[point_1], code_list[point_2] = code_list[point_2], code_list[point_1]
         new_code = "".join(code_list)
@@ -126,6 +125,7 @@ def swap(population: List[Individual], children: List[Individual], parameters: D
 
     return mutants
 
+
 def reverse(population: List[Individual], children: List[Individual], parameters: Dict[str, Any]) -> List[Individual]:
     """
     Обращение - случайная последовательность генов записывается в обратном порядке
@@ -138,16 +138,16 @@ def reverse(population: List[Individual], children: List[Individual], parameters
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not children:
-        raise KeyError('Список детей пуст')
+        raise KeyError("Список детей пуст")
 
     mutants: List[Individual] = []
     code_length = len(children[0].code)
     for child in children:
         code_list = list(child.code)
-        if random.random() < parameters['mutation_probability'] and code_length > 1:
+        if random.random() < parameters["mutation_probability"] and code_length > 1:
             start = random.randint(0, code_length - 1)
             end = random.randint(start, code_length - 1)
             code_list[start : end + 1] = code_list[start : end + 1][::-1]
@@ -164,6 +164,7 @@ def reverse(population: List[Individual], children: List[Individual], parameters
 
     return mutants
 
+
 def shuffle(population: List[Individual], children: List[Individual], parameters: Dict[str, Any]) -> List[Individual]:
     """
     Перетасовка - значения выбранной непрерывной последовательности генов перемешиваются случайным образом
@@ -176,16 +177,16 @@ def shuffle(population: List[Individual], children: List[Individual], parameters
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not children:
-        raise KeyError('Список детей пуст')
+        raise KeyError("Список детей пуст")
 
     mutants: List[Individual] = []
     code_length = len(children[0].code) if children else 0
     for child in children:
         code_list = list(child.code)
-        if random.random() < parameters['mutation_probability'] and code_length > 1:
+        if random.random() < parameters["mutation_probability"] and code_length > 1:
             start = random.randint(0, code_length - 1)
             end = random.randint(start, code_length - 1)
             segment = code_list[start : end + 1]
@@ -208,8 +209,8 @@ def shuffle(population: List[Individual], children: List[Individual], parameters
 def get_mutation(data: Dict[str, Any]) -> Callable:
     """Получить метод мутации по исходным данным"""
 
-    if 'mutation' not in data['operators']:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/mutation)')
+    if "mutation" not in data["operators"]:
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/mutation)")
     methods = {
         "inversion_one_bit": inversion_one_bit,
         "inversion_group_bits": inversion_group_bits,
@@ -217,7 +218,7 @@ def get_mutation(data: Dict[str, Any]) -> Callable:
         "reverse": reverse,
         "shuffle": shuffle,
     }
-    if data['operators']['mutation'] in methods.keys():
-        return methods[data['operators']['mutation']]
+    if data["operators"]["mutation"] in methods.keys():
+        return methods[data["operators"]["mutation"]]
     else:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/mutation/method)')
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/mutation/method)")

@@ -1,6 +1,6 @@
 import random
 from copy import deepcopy
-from typing import Callable, List, Tuple, Dict, Any
+from typing import Any, Callable, Dict, List, Tuple
 
 from src.classical_genetic_algorithm.model.individual import Individual
 
@@ -16,7 +16,7 @@ def get_weights(population: List[Individual], trend: str) -> List[float]:
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     ranks = [p.rank for p in population]
     min_rank = min(ranks)
@@ -25,11 +25,12 @@ def get_weights(population: List[Individual], trend: str) -> List[float]:
     if min_rank == max_rank:
         return [1.0 / len(population)] * len(population)
 
-    if trend == 'maximum':
+    scaled = []
+    if trend == "maximum":
         # Масштабируем в [0, 1] где max_rank -> 1, min_rank -> 0
         scaled = [(r - min_rank) / (max_rank - min_rank) for r in ranks]
 
-    elif trend == 'minimum':
+    elif trend == "minimum":
         # Масштабируем в [0, 1] где min_rank -> 1, max_rank -> 0
         scaled = [(max_rank - r) / (max_rank - min_rank) for r in ranks]
 
@@ -53,7 +54,7 @@ def standard_selection(population: List[Individual], trend: str) -> List[Tuple[I
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     current_population = deepcopy(population)
 
@@ -71,9 +72,7 @@ def standard_selection(population: List[Individual], trend: str) -> List[Tuple[I
     return parents
 
 
-def stochastic_universal_sampling(
-    population: List[Individual], trend: str
-) -> list[tuple[Individual, Individual]]:
+def stochastic_universal_sampling(population: List[Individual], trend: str) -> list[tuple[Individual, Individual]]:
     """
     Выбор родителей с помощью стохастической универсальной выборки (1 - случайно; 3 - со смещением в четверть оси)
     1 родитель выбирается случайно (вероятность p),
@@ -88,7 +87,7 @@ def stochastic_universal_sampling(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     current_population = deepcopy(population)
 
@@ -120,7 +119,7 @@ def stochastic_universal_sampling(
                 break
 
         for i, p1 in enumerate(new_parents):
-            for p2 in new_parents[i + 1:]:
+            for p2 in new_parents[i + 1 :]:
                 parents.append((p1, p2))
 
     return parents
@@ -129,13 +128,13 @@ def stochastic_universal_sampling(
 def get_parent_selection(data: Dict[str, Any]) -> Callable:
     """Получить метод выбора родителей по исходным данным"""
 
-    if 'parent_selection' not in data['operators']:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/parent_selection)')
+    if "parent_selection" not in data["operators"]:
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/parent_selection)")
     methods = {
         "standard": standard_selection,
         "stochastic_universal_sampling": stochastic_universal_sampling,
     }
-    if data['operators']['parent_selection'] in methods.keys():
-        return methods[data['operators']['parent_selection']]
+    if data["operators"]["parent_selection"] in methods.keys():
+        return methods[data["operators"]["parent_selection"]]
     else:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/parent_selection/method)')
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/parent_selection/method)")

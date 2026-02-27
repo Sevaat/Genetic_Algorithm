@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Callable, List, Dict, Any
+from typing import Any, Callable, Dict, List
 
 from classical_genetic_algorithm.utils.purpose import get_sorted_population
 from src.classical_genetic_algorithm.model.individual import Individual
@@ -20,9 +20,9 @@ def elite(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
-    n_elite = int(parameters['proportion_of_elite_individuals'] * parameters['number_of_individuals'])
+    n_elite = int(parameters["proportion_of_elite_individuals"] * parameters["number_of_individuals"])
 
     if len(population) - n_elite > len(mutants):
         n_elite = len(population) - len(mutants)
@@ -31,7 +31,7 @@ def elite(
     new_individuals += deepcopy(mutants)
     new_individuals = get_sorted_population(new_individuals, trend)
 
-    return new_individuals[:parameters['number_of_individuals']]
+    return new_individuals[: parameters["number_of_individuals"]]
 
 
 def simple_cut(
@@ -49,24 +49,24 @@ def simple_cut(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     new_individuals = deepcopy(population) + deepcopy(mutants)
     new_individuals = get_sorted_population(new_individuals, trend)
 
-    return new_individuals[: parameters['number_of_individuals']]
+    return new_individuals[: parameters["number_of_individuals"]]
 
 
 def get_replacement(data: Dict[str, Any]) -> Callable:
     """Получить метод сохранения особей по исходным данным"""
 
-    if 'replacement' not in data['operators']:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/replacement)')
+    if "replacement" not in data["operators"]:
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/replacement)")
     methods = {
         "elite": elite,
         "easy_cut": simple_cut,
     }
-    if data['operators']['replacement'] in methods.keys():
-        return methods[data['operators']['replacement']]
+    if data["operators"]["replacement"] in methods.keys():
+        return methods[data["operators"]["replacement"]]
     else:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/replacement/method)')
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/replacement/method)")

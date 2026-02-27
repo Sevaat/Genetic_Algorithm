@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 def __get_maximum_discharge(parameters: Dict[str, Any]) -> List[int]:
@@ -11,7 +11,7 @@ def __get_maximum_discharge(parameters: Dict[str, Any]) -> List[int]:
     """
 
     maximum_discharge = []
-    for gene_set in parameters['gene_sets']:
+    for gene_set in parameters["gene_sets"]:
         value = len(gene_set) - 1
         discharge = bin(value)[2:]
         maximum_discharge.append(len(discharge))

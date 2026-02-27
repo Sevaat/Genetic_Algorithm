@@ -14,12 +14,14 @@ def sort_by_more(population: List[Individual]) -> List[Individual]:
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     sorted_population = deepcopy(population)
 
     sorted_population = sorted(sorted_population, key=lambda ind: ind.rank)
+
     return sorted_population
+
 
 def sort_by_less(population: List[Individual]) -> List[Individual]:
     """
@@ -31,19 +33,21 @@ def sort_by_less(population: List[Individual]) -> List[Individual]:
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     sorted_population = deepcopy(population)
 
     sorted_population = sorted(sorted_population, key=lambda ind: ind.rank, reverse=True)
+
     return sorted_population
 
 
 def get_sorted_population(population: List[Individual], trend: str) -> List[Individual]:
     """Получить отсортированную популяцию"""
 
-    if trend == 'minimum':
+    if trend == "minimum":
         return sort_by_more(population)
-    elif trend == 'maximum':
+    elif trend == "maximum":
         return sort_by_less(population)
+
     return population

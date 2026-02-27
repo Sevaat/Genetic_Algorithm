@@ -1,7 +1,6 @@
 import json
 import multiprocessing
 import os
-from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -12,7 +11,7 @@ from classical_genetic_algorithm.model.population_initialization import get_popu
 from classical_genetic_algorithm.model.recombination import get_recombination
 from classical_genetic_algorithm.model.replacement import get_replacement
 from classical_genetic_algorithm.model.stops import get_stops
-from classical_genetic_algorithm.model.target_function import get_result_user_defined_function, get_result_objective_function
+from classical_genetic_algorithm.model.target_function import get_result_objective_function
 from src.classical_genetic_algorithm.model.individual import Individual
 
 
@@ -24,24 +23,25 @@ class CGA:
 
         # параметры ГА
         self.parameters = CGA._get_parameters(data)
-        self.trend = data['operators']['purpose']
+        self.trend = data["operators"]["purpose"]
 
         # функции операторов
         self.parent_selection = get_parent_selection(data)
         self.population_initialization = get_population_initialization(data)
-        self.target_function = get_result_user_defined_function
+        self.target_function = get_result_objective_function
         self.recombination = get_recombination(data)
         self.mutation = get_mutation(data)
         self.replacement = get_replacement(data)
         self.stops = get_stops
 
-
     @staticmethod
     def _load_data() -> Dict[str, Any]:
         """
         Читать JSON файл data_cga.json из директории data
+
         :return: данные классического генетического алгоритма
         """
+
         filepath = str(Path(__file__).resolve().parent / "data")
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/data_cga.json"
@@ -62,44 +62,44 @@ class CGA:
     def _get_parameters(data: Dict[str, Any]):
         """Получить параметры ГА из исходных данных"""
 
-        if 'parameters' not in data.keys():
-            raise KeyError('В исходных данных отсутствует информация по параметрам ГА (parameters)')
+        if "parameters" not in data.keys():
+            raise KeyError("В исходных данных отсутствует информация по параметрам ГА (parameters)")
 
         parameters = {
-            'number_of_individuals': None,
-            'proportion_of_elite_individuals': None,
-            'number_of_eras': None,
-            'mutation_probability': None,
-            'change_counter': None,
-            'number_of_results': None,
-            'recombination_point_count': None,
-            'number_of_recurring_individuals': None,
-            'gene_sets': None,
+            "number_of_individuals": None,
+            "proportion_of_elite_individuals": None,
+            "number_of_eras": None,
+            "mutation_probability": None,
+            "change_counter": None,
+            "number_of_results": None,
+            "recombination_point_count": None,
+            "number_of_recurring_individuals": None,
+            "gene_sets": None,
         }
 
         for key in parameters.keys():
-            if key != 'gene_sets':
-                if key not in data['parameters'].keys():
-                    raise KeyError(f'В исходных данных отсутствует информация по параметрам ГА (parameters/{key})')
+            if key != "gene_sets":
+                if key not in data["parameters"].keys():
+                    raise KeyError(f"В исходных данных отсутствует информация по параметрам ГА (parameters/{key})")
                 else:
-                    parameters[key] = data['parameters'][key]
+                    parameters[key] = data["parameters"][key]
 
-        if 'gene_sets' not in data['parameters'].keys():
-            raise KeyError('В исходных данных отсутствует информация по параметрам ГА (parameters/gene_sets)')
+        if "gene_sets" not in data["parameters"].keys():
+            raise KeyError("В исходных данных отсутствует информация по параметрам ГА (parameters/gene_sets)")
         else:
             gene_sets = []
-            if "simple_set" in data['parameters']['gene_sets'].keys():
-                for gs in data['parameters']['gene_sets']["simple_set"]:
+            if "simple_set" in data["parameters"]["gene_sets"].keys():
+                for gs in data["parameters"]["gene_sets"]["simple_set"]:
                     gene_sets.append(gs.split())
-            if "step_set" in data['parameters']['gene_sets'].keys():
-                for gs in data['parameters']['gene_sets']["step_set"]:
+            if "step_set" in data["parameters"]["gene_sets"].keys():
+                for gs in data["parameters"]["gene_sets"]["step_set"]:
                     gene_set = []
                     start, end, step = gs["start"], gs["end"], gs["step"]
                     while start <= end:
                         gene_set.append(str(start))
                         start += step
                     gene_sets.append(gene_set)
-            parameters['gene_sets'] = gene_sets
+            parameters["gene_sets"] = gene_sets
 
         return parameters
 
@@ -107,8 +107,10 @@ class CGA:
     def _save_data(population: List[Individual], parameters: Dict[str, Any]) -> None:
         """
         Запись в JSON файл result_cga_...,json в директорию result
+
         :return: None
         """
+
         filepath = str(Path(__file__).resolve().parent / "result")
         os.makedirs(filepath, exist_ok=True)
         filepath = f"{filepath}/result_cga_{datetime.now().strftime("%d.%m.%Y_%H-%M-%S")}.json"
@@ -119,22 +121,21 @@ class CGA:
         except Exception as e:
             print(f"Произошла ошибка: {e}")
 
-
     def run(self) -> None:
         """
         Оптимизировать задачи с использованием классического генетического алгоритма
+
         :return:
         """
 
         with multiprocessing.Pool() as pool:
             best_individual = None
-            counter = self.parameters['change_counter']
+            counter = self.parameters["change_counter"]
 
             population = self.population_initialization(self.parameters)
 
             args = [(individual, self.parameters) for individual in population]
-            population = pool.starmap(get_result_objective_function, args)
-            # population = self.target_function(population, self.parameters)
+            population = pool.starmap(self.target_function, args)
 
             era = 0
             while True:
@@ -143,21 +144,22 @@ class CGA:
                 mutants = self.mutation(population, children, self.parameters)
 
                 args = [(individual, self.parameters) for individual in mutants]
-                mutants = pool.starmap(get_result_objective_function, args)
-                # mutants = self.target_function(mutants, self.parameters)
+                mutants = pool.starmap(self.target_function, args)
 
                 population = self.replacement(population, mutants, self.parameters, self.trend)
 
-                best_individual, counter, stop_1, stop_2, stop_3 = self.stops(population, best_individual, counter, self.trend, era, self.parameters)
+                best_individual, counter, stop_1, stop_2, stop_3 = self.stops(
+                    population, best_individual, counter, self.trend, era, self.parameters
+                )
                 if stop_1 or stop_2 or stop_3:
                     if stop_1:
-                        print('Останов по причине неизменности особи')
+                        print("Останов по причине неизменности особи")
                     if stop_2:
-                        print('Останов по причине окончания эр')
+                        print("Останов по причине окончания эр")
                     if stop_3:
-                        print('Останов по причине однородности популяции')
+                        print("Останов по причине однородности популяции")
                     print(f"Расчет окончен на эре: {era}")
                     break
                 else:
                     era += 1
-        self._save_data(population[:self.parameters['number_of_results']], self.parameters)
+        self._save_data(population[: self.parameters["number_of_results"]], self.parameters)

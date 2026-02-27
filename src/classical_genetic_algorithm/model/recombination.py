@@ -1,7 +1,6 @@
 import random
-from typing import List, Tuple, Dict, Any, Callable
+from typing import Any, Callable, Dict, List, Tuple
 
-from classical_genetic_algorithm.utils.duplicate_check import individual_addition
 from src.classical_genetic_algorithm.model.individual import Individual
 
 
@@ -19,10 +18,10 @@ def point_crossing(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not parents:
-        raise KeyError('Список родителей пуст')
+        raise KeyError("Список родителей пуст")
 
     children: List[Individual] = []
     for par_par in parents:
@@ -33,6 +32,7 @@ def point_crossing(
             children_1 += par_par[i % 2].code[points[i] : points[i + 1]]
             children_2 += par_par[(i + 1) % 2].code[points[i] : points[i + 1]]
         children += child_addition(population + children, children_1, children_2, parameters)
+
     return children
 
 
@@ -50,10 +50,10 @@ def segmental_crossing(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not parents:
-        raise KeyError('Список родителей пуст')
+        raise KeyError("Список родителей пуст")
 
     children: List[Individual] = []
     for par_par in parents:
@@ -71,6 +71,7 @@ def segmental_crossing(
             if random.randint(0, 100) < 20:
                 s = not s
         children += child_addition(population + children, children_1, children_2, parameters)
+
     return children
 
 
@@ -88,10 +89,10 @@ def even_crossing(
     """
 
     if not population:
-        raise KeyError('Список особей пуст')
+        raise KeyError("Список особей пуст")
 
     if not parents:
-        raise KeyError('Список родителей пуст')
+        raise KeyError("Список родителей пуст")
 
     children: List[Individual] = []
     for par_par in parents:
@@ -104,6 +105,7 @@ def even_crossing(
             p = random.choices(list(par_par), weights=[50, 50], k=1)
             children_2 += p[0].code[points[i] : points[i + 1]]
         children += child_addition(population + children, children_1, children_2, parameters)
+
     return children
 
 
@@ -117,15 +119,17 @@ def get_points(length: int, parameters: Dict[str, Any]) -> List[int]:
     :return: список точек для рекомбинации
     """
 
-    points = [random.randint(1, length - 2) for i in range(parameters['recombination_point_count'])]
+    points = [random.randint(1, length - 2) for i in range(parameters["recombination_point_count"])]
     points.append(0)
     points.append(length)
     points = sorted(points)
+
     return points
 
 
 def child_addition(
-    population: List[Individual], children_1: str, children_2: str, parameters: Dict[str, Any]) -> List[Individual]:
+    population: List[Individual], children_1: str, children_2: str, parameters: Dict[str, Any]
+) -> List[Individual]:
     """
     Проверка на дубликаты и добавление новых особей в список детей
 
@@ -152,14 +156,14 @@ def child_addition(
 def get_recombination(data: Dict[str, Any]) -> Callable:
     """Получить метод рекомбинации по исходным данным"""
 
-    if 'recombination' not in data['operators']:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/recombination)')
+    if "recombination" not in data["operators"]:
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/recombination)")
     methods = {
         "point": point_crossing,
         "segmented": segmental_crossing,
         "uniform": even_crossing,
     }
-    if data['operators']['recombination'] in methods.keys():
-        return methods[data['operators']['recombination']]
+    if data["operators"]["recombination"] in methods.keys():
+        return methods[data["operators"]["recombination"]]
     else:
-        raise KeyError('В исходных данных отсутствует информация по операторам ГА (operators/recombination/method)')
+        raise KeyError("В исходных данных отсутствует информация по операторам ГА (operators/recombination/method)")

@@ -1,5 +1,4 @@
 from abc import ABC
-from typing import Callable
 
 from src.classical_genetic_algorithm.classical_genetic_algorithm import CGA
 
