@@ -12,6 +12,7 @@ from classical_genetic_algorithm.model.recombination import get_recombination
 from classical_genetic_algorithm.model.replacement import get_replacement
 from classical_genetic_algorithm.model.stops import get_stops
 from classical_genetic_algorithm.model.target_function import get_result_objective_function
+from classical_genetic_algorithm.utils.checking_parameters import checking_parameters
 from src.classical_genetic_algorithm.model.individual import Individual
 
 
@@ -49,6 +50,8 @@ class CGA:
         try:
             with open(filepath, "r", encoding="utf-8") as file:
                 data = json.load(file)
+            if not isinstance(data, dict):
+                raise TypeError("Исходные данные должны быть словарем")
             print("Файл успешно загружен")
         except FileNotFoundError as e:
             print(f"Файл не найден: {e}")
@@ -77,24 +80,49 @@ class CGA:
             "gene_sets": None,
         }
 
+        if not isinstance(data["parameters"], dict):
+            raise TypeError("Набор параметров должен быть словарем")
         for key in parameters.keys():
             if key != "gene_sets":
                 if key not in data["parameters"].keys():
                     raise KeyError(f"В исходных данных отсутствует информация по параметрам ГА (parameters/{key})")
                 else:
+                    checking_parameters(key, data["parameters"][key])
                     parameters[key] = data["parameters"][key]
 
         if "gene_sets" not in data["parameters"].keys():
             raise KeyError("В исходных данных отсутствует информация по параметрам ГА (parameters/gene_sets)")
         else:
             gene_sets = []
+            if not isinstance(data["parameters"]["gene_sets"], dict):
+                raise TypeError("Набор генов должен быть словарем")
             if "simple_set" in data["parameters"]["gene_sets"].keys():
+                if not isinstance(data["parameters"]["gene_sets"]["simple_set"], list):
+                    raise TypeError("Данные простого набора генов должны быть списком")
                 for gs in data["parameters"]["gene_sets"]["simple_set"]:
+                    if not isinstance(gs, str):
+                        raise TypeError("Простой набор генов должен быть строкой")
                     gene_sets.append(gs.split())
             if "step_set" in data["parameters"]["gene_sets"].keys():
+                if not isinstance(data["parameters"]["gene_sets"]["step_set"], list):
+                    raise TypeError("Данные набора генов с шагом должны быть списком")
                 for gs in data["parameters"]["gene_sets"]["step_set"]:
+                    if not isinstance(gs, dict):
+                        raise TypeError("Набор генов с шагом должен быть словарем")
                     gene_set = []
+                    if "start" not in gs.keys() or "end" not in gs.keys() or "step" not in gs.keys():
+                        raise KeyError(
+                            "Словерь набора гена с шагом не содержит обязательного ключа (start, end, step)"
+                        )
                     start, end, step = gs["start"], gs["end"], gs["step"]
+                    if not isinstance(start, float | int):
+                        raise TypeError("Начало последовательности должно быть рациональным (целым) числом")
+                    if not isinstance(end, float | int):
+                        raise TypeError("Конец последовательности должен быть рациональным (целым) числом")
+                    if not isinstance(step, float | int):
+                        raise TypeError("Шаг последовательности должен быть рациональным (целым) числом")
+                    if start > end or step <= 0:
+                        raise ValueError("Проверьте правильность ввода: start <= end; step > 0")
                     while start <= end:
                         gene_set.append(str(start))
                         start += step
