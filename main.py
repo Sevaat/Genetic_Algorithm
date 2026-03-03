@@ -1,12 +1,8 @@
-from typing import List
 from src.evolutionary_algorithm import EvolutionaryAlgorithm
 
 
 def main():
-    def user_function(param: List[str]):
-        return sum([float(p) for p in param])
-
-    EvolutionaryAlgorithm.classical_genetic_algorithm(user_function)
+    EvolutionaryAlgorithm.classical_genetic_algorithm()
 
 
 if __name__ == '__main__':
